@@ -1,0 +1,7 @@
+.DS_Store
+*.html
+*.txt
+node_modules/
+_book/
+*.swp
+*.zip

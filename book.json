@@ -1,0 +1,6 @@
+{
+    "title": "JavaScript ES5 入门教程",
+    "description": "正在加紧创作...",
+    "language": "zh",
+    "plugins": ["mathjax", "-prism", "highlight"]
+}
