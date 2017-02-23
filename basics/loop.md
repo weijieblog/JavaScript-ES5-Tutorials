@@ -317,6 +317,71 @@ for(var key in book) {
   console.log(key, book[key]);
 }
 ```
-与操作遍历数组类似，我们能够遍历一个对象了以后，也可以对对象进行复杂的操作。
+与操作遍历数组类似，我们能够遍历一个对象了以后，也可以对对象进行复杂的操作。比如下列代码获取了对象`book`的全部属性名，村放在数组`result`中：
+
+```javascript
+var book = {
+  title: '双城记',
+  author: '狄更斯',
+  years: 1859
+};
+
+var result = [];
+for(var key in book) {
+  result.push(key);
+}
+
+console.log(result); // ['title', 'author', 'years']
+```
+
+## 嵌套循环
+
+我们已经学过了如何使用循环语句来遍历单个的对象或者数组，但是有的时候，我们处理一些更复杂的情况，比如遍历二维数组，遍历属性是数组的对象中每个属性的成员，成员是对象的数组中每个成员的属性，如此一来单个的循环语句就有些使不上力了，我们需要组合使用多个循环语句，例如下边的代码从二维数组`animals`中找到`'恐龙'`的坐标：
+
+```javascript
+var animals = [
+  ['白兔', '老鼠', '食蚂兽'],
+  ['蛇', '蜥蜴', '恐龙'],
+  ['鸡', '老鹰', '八哥']
+];
+
+var x, y;
+
+for (var i = 0; i < animals.length; i++) { // #1
+  for (var j = 0; j < animals[i].length; j++) {  // #2
+    if (animals[i][j] === '恐龙') {
+      x = i;
+      y = j;
+    }
+  }
+}
+
+console.log(animals[x][y]); // 恐龙
+```
+>  `#1`处的第一层循环会逐个访问`animals`中的每个成员，由于每个成员又是数组，所以`#2`处的第二层循环遍历`animals`成员的成员。
+
+当对象的属性是数组的时候，我们也可以参照上面的方法潜逃`for..in`语句和`for`语句，例如下面的代码从对象`animals`中找到`'恐龙'`：
+
+```javascript
+var animals = {
+  suckler: ['白兔', '老鼠', '食蚂兽'],
+  reptilian: ['蛇', '蜥蜴', '恐龙'],
+  birds: ['鸡', '老鹰', '八哥']
+};
+
+var x, y;
+
+for (var key in animals) { // #1
+  for (var j = 0; j < animals[key].length; j++) {  // #2
+    if (animals[key][j] === '恐龙') {
+      x = key;
+      y = j;
+    }
+  }
+}
+
+console.log(animals[x][y]); // 恐龙
+```
+>  因为`animals`是个对象所以`#1`处的第一层循环使用`for...in`语句，`#2`处的第二层循环遍历`animals`属性（是个数组）的成员。
 
 ## 循环语句练习
