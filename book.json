@@ -5,9 +5,9 @@
     "plugins": ["mathjax", "-prism", "highlight"],
      "pluginsConfig": {
         "fontsettings": {
-            "theme": "night", // 'sepia', 'night' or 'white',
-            "family": "serif", // 'serif' or 'sans',
-            "size": 2         // 1 - 4
+            "theme": "night",
+            "family": "serif",
+            "size": 2
         }
     }
 }
