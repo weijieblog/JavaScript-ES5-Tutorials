@@ -1,6 +1,13 @@
 {
-    "title": "JavaScript ES5 入门教程",
+    "title": "JavaScript 入门教程",
     "description": "正在加紧创作...",
     "language": "zh",
-    "plugins": ["mathjax", "-prism", "highlight"]
+    "plugins": ["mathjax", "-prism", "highlight"],
+     "pluginsConfig": {
+        "fontsettings": {
+            "theme": "night", // 'sepia', 'night' or 'white',
+            "family": "serif", // 'serif' or 'sans',
+            "size": 2         // 1 - 4
+        }
+    }
 }
