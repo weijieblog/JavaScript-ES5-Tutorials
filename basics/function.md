@@ -19,7 +19,7 @@ function goodLuck() {
 goodLuck();
 ```
 
-## 函数的声明和调用
+## 函数的基本使用方式
 
 ### 函数的声明
 我们可以使用如下伪代码描述的语法声明一个函数：
@@ -30,7 +30,7 @@ function 函数名 (参数1, 参数2, 参数3, ...) {
 }
 ```
 
-函数的名字就是**函数名**，函数名属于标识符，只能由字母数字下划线组成，并且不能以数字开头，在《变量》一章中有介绍过标识符的规则。声明函数时所用的代码块叫做**函数体**，函数体可以包含任意合法的 JavaScript 代码，这些代码只有在我们函数调用的时候运行。下边代码是上文提到过的`goodLuck`函数，你能说说哪里是函数名、哪里是函数体么。
+函数的名字就是**函数名**，函数名属于标识符，只能由字母数字下划线组成，并且不能以数字开头，在《变量》一章中有介绍过标识符的规则。声明函数时所用的代码块叫做**函数体**，函数体可以包含任意合法的 JavaScript 代码，这些代码只有在我们调用该函数的时候运行。下边代码是上文提到过的`goodLuck`函数，你能说说哪里是函数名、哪里是函数体么。
 
 ```javascript
 // 函数的声明
@@ -118,20 +118,238 @@ goodLuck(3);
 goodLuck(5); 
 ```
 
-## 函数的返回值
+在调用函数的时候，参数可以直接传值，也可以使用变量，变量和值还可以混合使用，例如下边的代码中的函数`average`求三个值的平均值，并且将结果输出到控制台上：
+
+```javascript
+function average (x1, x2, x3) {
+  var result = (x1 + x2 + x3) / 3;
+  console.log(result);
+}
+
+var a = 5,
+    b = 6;
+
+// 使用变量 a b 和数字 7 给函数传递参数
+average(a, b, 7); // 6
+```
+> 小练习，你能说出上面代码中，那些是函数的声明哪些是函数的调用，当函数被调用时，`x1` `x2` `x3`的值分别是什么
+
+同时，参数可以是**任意类型**的数据，例如下边代码中的有三个函数`invert`、`tail`和`reverse`，它们分别使用了对象、数组和字符串做参数。
+
+```javascript
+// 接受一个对象作为参数，
+// 并在控制台输出一个属性名和属性值倒置的对象
+function invert (object) {
+  var result = {};
+  for (var key in object) {
+    result[object[key]] = key;
+  }
+  console.log(result);
+}
+invert({name: 'jack', age: 56}); // {jack: 'name', 56: 'age'}
+invert({jack: 'name', 56: 'age'}); // {name: 'jack', age: 56}
+
+// 接受一个数组作为参数，
+// 并在控制台输出该数组除了第一个成员意外的其他成员
+function tail (array) {
+  console.log(array.slice(1));
+}
+tail([1, 2, 3, 4, 5]); // [2, 3, 4, 5]
+tail(['a', 'b', 'c', 'd', 'e']); // ['b', 'c', 'd', 'e']
+
+
+// 接受一个字符串作为参数，
+// 并在控制台输出一个逆序的字符串
+function reverse (string) {
+  var result = '';
+  for (var i = string.length - 1; i>= 0; i--) {
+    result = result + string[i];
+  }
+  console.log(result);
+}
+reverse('abcde'); // 'edcba'
+reverse('12345'); // '54321'
+```
+> 虽然参数名是可以自行定义的，但是在声明函数的时候，使用英文意思明确的参数名是一个好习惯，方便别人和自己知道你写的函数需要接受怎样的参数。
+
+### 函数的返回值
+
+之前的示例函数在调用后都是没有返回值的，当我们需要函数有返回值的时候，可以在函数体里使用`return`语句，下边代码中的两个函数的作用是将两个数相加，一个使用了`return`语句，另外一个没使用：
+
+```javascript
+// 没有使用 return
+function add1 (x1, x2) {
+  x1 + x2;
+}
+var a = add1(1, 1);
+console.log(a); // undefined
+
+// 使用了 return
+function add2 (x1, x2) {
+  return x1 + x2;
+}
+
+var b = add2(1, 1);
+console.log(b); // 2
+```
+
+通过上边代码我们可以看到，没使用`return`语句的函数，外部得不到`x1 + x2`的结果，而使用了`return`语句的函数可以将结果返回给外部使用。很多时候，我们使用函数是为了对数据进行加工，在这种情况下，我们把加工后的结果返回给外部使用是个很棒的做法。如此一来，函数的职责就会变得明确，它只负责加工数据，不必关心加工后的结果在外部被怎么使用。
+
+上文提到的三个函数`invert`、`tail`和`reverse`就是这种类型的函数，下边的代码修改它们，让它们返回加工数据后的结果：
+
+```javascript
+// 接受一个对象作为参数，
+// 返回一个属性名和属性值倒置的对象
+function invert (object) {
+  var result = {};
+  for (var key in object) {
+    result[object[key]] = key
+  }
+  return result;
+}
+
+// 接受一个数组作为参数，
+// 返回数组除了第一个成员意外的其他成员
+function tail (array) {
+  return array.slice(1);
+}
+
+// 接受一个字符串作为参数，
+// 返回一个逆序的字符串
+function reverse (string) {
+  var result = '';
+  for (var i = string.length - 1; i>= 0; i--) {
+    result = result + string[i];
+  }
+  return result;
+}
+```
+如此一来函数的外部就可以尽情的使用它们的结果，而不是像原来一样仅仅将结果显示在控制台中，这样函数就会变得更通用，下边代码举例了`tail`的返回值的各种使用方式。
+
+```javascript
+// 得到了 tail 函数的结果
+var a = tail(['jack', 'tony', 'sam', 'david', 'lily']);
+
+// 可以在控制台中输出它
+console.log(a); // ['tony', 'sam', 'david', 'lily']
+
+// 也可以对结果进行修改
+a.push('bella');
+a.splice(2, 1);
+
+// 还可以将结果再次加工
+a = a.slice(1, 3);
+
+// 赋值给别的变量
+var b = a;
+
+// 此处省略约一万种操作 a 的方式
+
+// 再次使用 tail 处理别的数组
+var c = tail([1, 2, 3, 4, 5]);
+// 得到的结果 c 又可以被任意的使用
+
+// 再再次使用 tail 处理其他数组
+var d = tail([
+  [1, 2, 3],
+  [4, 5, 6],
+  [7, 8, 9]
+]);
+// 得到的结果 d 又可以被任意的使用
+/* 等等等等 */
+```
+## 函数表达式
+
 
 ## 函数和方法
 
-## 变量的作用域
+### 作为对象属性的函数
 
-## 匿名函数和函数表达式
+之前说到函数的调用，可能大家会觉得似曾相识，实际上，我们在进入这章之前，已经有使用过函数了。例如字符串的`slice`数组的`pop` `push`等等。只不过在当时，我们称它们为「方法」。实际上，函数和方法可谓一脉相承。
+
+回忆一下对象一章的知识，我们有学到「对象的属性可以是任意类型的数据」。实际上函数也是一种数据类型，虽然这理解起来有点别扭，但是你想想，不管是函数，还是图片，还是声音，或者是我们学到的字符串、数字、数组等等的东西，在计算机的世界里不都是由`0`和`1`组成的么。既然都是由`0`和`1`组成的玩意儿，那么 JavaScript 把函数也当作了一种数据类型也就没什么大惊小怪的了。
+
+那么既然「对象的属性可以是任意类型的数据」，而函数也是一种数据类型，那么对象的属性实际上也能是函数。那么为了符合面向对象编程的世界观，JavaScript 把这种作为对象属性存在的函数叫做**方法**。
+
+例如下边代码中的对象`user`有一个`sayHiTo`方法：
+
+```javascript
+var user = {
+  name: 'bella',
+  age: 12,
+  sayHiTo: function (target) {
+    console.log('Hi ~ ' + target);
+  }
+}
+
+user.sayHiTo('jack'); // 'Hi ~ jack'
+```
+
+### this变量初探
+
+当函数作为某个对象的方法的时候，在它的内部有一个特殊的变量叫`this`这个变量代表着对象本身，例如我们给上边的`user`对象加上一个`selfIntroduction`方法，让它可以进行自我介绍。
+
+```javascript
+var user = {
+  name: 'bella',
+  age: 12,
+  sayHiTo: function (target) {
+    console.log('Hi ~ ' + target);
+  },
+  selfIntroduction: function () {
+    console.log('My name is ' + this.name); // 通过 this 引用到这个对象的 name 属性
+  },
+  greetingStart: function (target) {
+    this.sayHiTo(target);
+    this.selfIntroduction();
+  },
+}
+
+user.selfIntroduction(); // 'My name is bella'
+
+user.name = 'Jack Wu';
+user.selfIntroduction(); // 'My name is Jack Wu'
+
+user.name = 'Lucy';
+user.selfIntroduction(); // 'My name is Lucy'
+
+user.greetingStart('nicky');
+// 'Hi ~ nicky'
+// 'My name is Lucy'
+```
+如此一来，当我们在方法内部想使用对象的某些属性的时候，就会变得灵活，许多东西就可以直接通过`this`来访问，而不是写死在代码中。
+
+但是，要吐槽的一点是，`this`不会总是乖乖听话的，例如下边代码中的`this.name`丢了，运行`greetingStart`直接报错。
+
+```javascript
+var user = {
+  name: 'bella',
+  age: 12,
+  sayHiTo: function (target) {
+    console.log('Hi~ ' + target);
+  },
+  selfIntroduction: function () {
+    console.log('My name is ' + this.name); // 通过 this 引用到这个对象的 name 属性
+  }
+}
+
+var selfIntroduction = user.selfIntroduction;
+selfIntroduction(); // 'My name is' ，注意 this.name 的值没了
+user.selfIntroduction(); // 'My name is bella'，this.name 的值又回来了
+
+var greetingStart = user.greetingStart;
+greetingStart('nicky'); // 直接报错
+```
+
+实际上，`this`变量作为 JavaScript 中最为让人困惑的功能之一，想要彻底弄明白它涉及到其他知识，我们会在往后详细介绍它。现在阶段，如果想要`this`的值正常，我们可以使用`属性名.方法名(参数1, 参数2....)`这种格式调用对象的方法。
+
+## 变量的作用域
 
 ## 高阶函数
 
 ## 函数的练习
 1. 使用费马小定理进行素性测试，费马小定理是来自公元 1640 年的一个定理，由数学家费马发现，它的内容是：
-  
- $$ 如果 p 是一个素数，那么对于任意的 1 \le a < p 有：$$
+  如果 $$ p $$ 是一个素数，那么对于任意的 $$ 1 \le a < p$$  有：
  
  $$ a^{p-1} \equiv 1 \pmod{p} $$
  
