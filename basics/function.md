@@ -1095,3 +1095,35 @@ u = (y + z) / x; // 小红代码原来的逻辑得以保留
     
     fn(sayPrice); // #4
     ```
+
+12. 下边代码`#1~#4`各输出什么
+
+    ```javascript
+    var x = 1;
+    var fn = function () {
+      var x = 5;
+      var a = function () {
+        console.log(x);
+      }
+      a(); // #1
+      
+      var b = function (x) {
+        console.log(x);
+      }
+      b(3); // #2
+      
+      var c = function () {
+        var x = 9;
+        console.log(x);
+      }
+      b(); // #3
+      
+      var d = function () {
+        return function () {
+          console.log(x);
+        }
+      }
+      d()(); // #4
+    }
+    ```
+    > 其中`d()()`是一种简写形式，因为`d()`的返回值是一个函数，在后面再加个`()`就是对`d()`的返回值再调用，就写成了`d()()`。
