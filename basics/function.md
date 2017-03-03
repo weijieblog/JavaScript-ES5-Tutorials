@@ -895,7 +895,7 @@ u = (y + z) / x; // 小红代码原来的逻辑得以保留
     ```
     「你写的代码」
     console.log(gcd(12, 28)); // 4
-    console.log(reduceFrac(12, 28)); // 3 7
+    console.log(reduceFrac(12, 28)); // [3, 7]
     ```
 2. 在不借助数组原生方法的情况下实现一个数组的`slice`函数，这个函数接受三个参数`array` `start`和`end`。
 
@@ -923,8 +923,7 @@ u = (y + z) / x; // 小红代码原来的逻辑得以保留
  
  编程中，如果我们要测试 $$p$$ 是否为素数，可以按照如下说明实现：
  1. 如果 $$p \le 1$$ 为那么它不是素数。
- 2. 将 $$p$$ 与从 $$2$$ 到 $$ \sqrt{p} $$ 的每个整数求模。
- 3. 在 2 的过程中如果存在模为 $$0$$ 的情况那么 $$p$$ 就是素数，否则不是素数。
+ 2. 将 $$p$$ 与$$[2, \sqrt{p}] $$ 区间内的每个整数求模，在此过程中如果存在模为 $$0$$ 的情况那么 $$p$$ 就是素数，否则不是素数。
 
     ```
     「你写的代码」 
@@ -952,14 +951,14 @@ u = (y + z) / x; // 小红代码原来的逻辑得以保留
     ```
     「你写的代码」
     var result = 0;
-    foreach([1,2,3,4,5], function (item) {
+    foreach([1, 2, 3, 4, 5], function (item) {
       console.log(item); // 逐个输出 1 2 3 4 5
       result += item;
     });
     console.log(result); // 15
     
     var result = '';
-    foreach(['a','b','c','d','e'], function (item) {
+    foreach(['a', 'b', 'c', 'd', 'e'], function (item) {
       console.log(item); // 逐个输出 'a' 'b' 'c' 'd' 'e'
       retult += item;
     });
@@ -972,10 +971,127 @@ u = (y + z) / x; // 小红代码原来的逻辑得以保留
     var a = filter([1, 2, 3, 4, 5, 6, 7], function (n) {
       return n % 2 === 0;
     });
-    console.log(a); [2, 4, 6]
+    console.log(a); // [2, 4, 6]
     
     var b = filter([1, 2, 3, 4, 5, 6, 7], function (n) {
       return n >= 2 && n <= 5;
     });
-    console.log(b); [2, 3, 4, 5]
+    console.log(b); // [2, 3, 4, 5]
+    ```
+
+9. 写一个`pick`函数，接受数目不定的参数，第一个参数是一个对象，第二个参数开始是字符串，调用这个函数能从第一个参数对象中选出往后参数字符串标识的属性，并将选出来的属性组成一个新的对象返回。
+
+    ```
+    「你写的代码」
+    var a = pick({
+      name: 'bella',
+      gender: 'female',
+      age: 30,
+      title: 'NodeJS开发'
+    }], 'name', 'title');
+    console.log(a); // {name: 'bella', title: 'NodeJS开发'}
+    
+    var b = filter({
+      name: 'coconut',
+      price: 5,
+      type: 'fruit',
+      weight: 1,
+    }, 'name', 'price', 'weight');
+    console.log(b); // {name: 'coconut', price: 5, weight: 1}
+    
+    var c = pick({
+      name: 'bella',
+      gender: 'female',
+      age: 30,
+      title: 'NodeJS开发'
+    }], 'name');
+    console.log(c); // {name: 'bella'}
+    ```
+
+10. 下边代码`#1~#4`各输出什么。
+
+    ```javascript
+    var fn = function () {
+      console.log(arguments);
+      return function () {
+        console.log(arguments);
+      }
+    }
+    var a = fn('a', 'b', 'c'); // #1
+    a(1, 2, 3); // #2
+    
+    var func = function (x1, x2, x3) {
+      console.log(x1, x2, x3);
+      return function (x1, x2, x3) {
+        console.log(x1, x2, x3);
+      }
+    }
+    var b = func('a', 'b', 'c'); // #3
+    b(1, 2, 3); // #4
+    ```
+
+11. 下边代码`#1~#6`各输出什么
+
+    ```javascript
+    var x = 5;
+    var fn = function (x) {
+      return function () {
+        console.log(x);
+      }
+    }
+    var a = fn('r');
+    a(); // #1
+    
+    var b = fn();
+    b(); // #2
+    
+    var func = function () {
+      return function () {
+        console.log(x);
+      }
+    }
+    var c = func('r');
+    c('a'); // #3
+    c(); // #4
+    
+    var f = function () {
+      return function (x) {
+        console.log(x);
+      }
+    }
+    var d = f('r');
+    d('a'); // #5
+    d(); // #6
+    ```
+12. 下边代码`#1~#4`各输出什么
+
+    ```javascript
+    var item = {
+      name: 'coconut',
+      price: 5,
+      sayPrice() {
+        console.log(this.price)
+      }
+    };
+    
+    item.sayPrice(); // #1
+    
+    var sayPrice = item.sayPrice;
+    sayPrice(); // #2
+    
+    var item2 = {
+      name: 'banana',
+      price: 3,
+      getPrice(fn) {
+        fn();
+      }
+    }
+    item2.sayPrice = sayPrice;
+    item2.sayPrice(); // #3
+    
+    var fn = function (item2.sayPrice) {
+      func();
+    }
+    
+    fn(sayPrice); // #4
     ```
