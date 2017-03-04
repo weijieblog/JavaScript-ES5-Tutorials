@@ -9,7 +9,7 @@
     * [条件语句](basics/condition.md)
     * [循环语句](basics/loop.md)
     * [函数](basics/function.md)
-    * [周期任务和计时任务]()
+    * [周期任务和计时任务](basics/timer.md)
 * [常用内置对象和方法](library/README.md)
     * [Math 对象]()
     * [Date 对象]()

@@ -1089,7 +1089,7 @@ u = (y + z) / x; // 小红代码原来的逻辑得以保留
     item2.sayPrice = sayPrice;
     item2.sayPrice(); // #3
     
-    var fn = function (item2.sayPrice) {
+    var fn = function (func) {
       func();
     }
     

@@ -745,7 +745,7 @@ switch (title) {
       name = 'jackson';
 
   var a = 0;
-  if (jackson.length >= ten) {
+  if (name.length >= ten) {
       a = 1;
   } else {
       a = 2;
