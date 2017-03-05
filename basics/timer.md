@@ -25,7 +25,7 @@ setTimeout(function callback (salutation, name) {
 
 ### 使用 clearTimeout 清除延时任务
 
-既然`setTimeout`是一个函数，那么它就会有返回值，它的返回值是一个数字ID，而`clearTimeout`可以接受这个数字ID并清除掉这个ID所代表的定时器，如此一来，这个定时器中的逻辑就不会被执行了，例如下边代码中的`setTimeout`被清除了，它什么也不输出：
+既然`setTimeout`是一个函数，那么它就会有返回值，它的返回值是一个数字 ID，而`clearTimeout`可以接受这个数字 ID 并清除掉这个 ID 所代表的定时器，如此一来，这个定时器中的逻辑就不会被执行了，例如下边代码中的`setTimeout`被清除了，它什么也不输出：
 
 ```javascript
 var timerID = setTimeout(function (salutation, name) {
@@ -60,7 +60,7 @@ setInterval(function (salutation, name) {
 
 ### 使用 clearInterval 清除周期任务
 
-如果你执行了上边`setInterval`的代码，你会发觉除非刷新页面，否则它完全停不下来，这个时候我们就需要`clearInterval`来清除`setInterval`创建的周期任务，`setInterval`的返回值是个数字ID，将这个ID传递给`clearInterval`就可以清除该ID所代表的周期任务，例如下边是一个十秒倒计时，
+如果你执行了上边`setInterval`的代码，你会发觉除非刷新页面，否则它完全停不下来，这个时候我们就需要`clearInterval`来清除`setInterval`创建的周期任务，`setInterval`的返回值是个数字 ID，将这个 ID 传递给`clearInterval`就可以清除该ID所代表的周期任务，例如下边是一个十秒倒计时，
 
 ```javascript
 var countDown = 10;
@@ -82,7 +82,7 @@ var timerID = setInterval(function () {
 
 ```javascript
 setTimeout(function callback () {
-  console.log(1)
+  console.log(1);
 }, 1000);
 
 console.log(2);
@@ -94,7 +94,7 @@ console.log(2);
 
 ```javascript
 setTimeout(function callback () {
-  console.log(1)
+  console.log(1);
 }, 0);
 
 console.log(2); // #1
@@ -103,3 +103,16 @@ console.log(2); // #1
 上边的`setTimeout`相当于告诉 JavaScript ，让它注意一个「timeout」事件，叮嘱它当「timeout」事件来的时候调用`callback`函数，然后 JavaScript 去执行`#1`去了，直到它忙完手头上的事情（通常来说时间非常短），「timeout」事件被触发，`callback`被执行。
 
 ## 定时器练习
+
+1. 编写 60 秒倒计时的代码。
+2. 说出下列代码中`1`和`2`的输出顺序。
+    
+    ```javascript
+    setInterval(function callback () {
+      console.log(1);
+    }, 0);
+    
+    console.log(2); // #1
+    ```
+3. `setTimeout`和`clearInterval`有什么区别。
+4. 写出 5 秒后在命令行输出`hello world`的代码。

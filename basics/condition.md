@@ -396,93 +396,7 @@ if (条件1) {
  1. JavaScript 对这个语句中各个「条件」的处理规则和单一`if`语句中介绍的一样。
 
 
-这个语句中`else if {...}`的个数可以有无数多个，例如下面各个语句都是合法的：
-
-``` javascript
-var score = 85;
-
-// 只有一个 else if {...} 
-if (score >= 0 && score < 60) {
-  console.log('没及格');  // 没执行，因为 score >= 0 && score < 60 返回 false
-} else if (score >= 60 && score <= 100) {
-  console.log('及格');  // 执行了， 因为 score >= 60 && score <= 100 返回 true
-} else {
-  console.log('异常：分数小于 0 或者大于 100'); // 没执行，因为有一个条件的结果是 true
-}
-
-// 有多个 else if {...}
-if (score >= 0 && score < 20) {
-  console.log('分数少于 20'); // 没执行
-} else if (score >= 20 && score < 40) {
-  console.log('分数在 20 到 40 之间'); // 没执行
-} else if (score >= 40 && score < 60) {
-  console.log('分数在 40 到 60 之间'); // 没执行
-} else if (score >= 60 && score < 80) {
-  console.log('分数在 60 到 80 之间'); // 没执行
-} else if (score >= 80 && score < 100) {
-  console.log('分数在 80 到 100 之间'); // 执行了
-} else if (score === 100) {
-  console.log('满分'); // 没执行
-} else {
-  console.log('异常：分数小于 0 或者大于 100'); // 没执行
-}
-```
-
-当`else if {...}`的个数是零个时，就成了`if...else...`语句，例如：
-
-``` javascript
-var score = 85;
-
-// 一个 else if {...} 都没有，就成了 if...else... 语句
-if (score >= 0 && score < 100) {
-  console.log('正常：分数在正常范围内');
-} else {
-  console.log('异常：分数小于 0 或者大于 100');
-}
-```
-
-这个语句中结尾的`else {...}`不是必须的，例如下面的代码是合法的： 
-
-``` javascript
-var score = 85,
-    grade;
-
-// 去掉了末尾的 else {...} 
-if (score >= 0 && score < 60) {
-  grade = '没及格';
-} else if (score >= 60 && score <= 100) {
-  grade = '及格';
-}
-console.log(grade); // '及格'
-
-// 去掉了末尾的 else {...} 
-if (score >= 0 && score < 60) {
-  grade = '没及格';
-} else if (score >= 60 && score < 80) {
-  grade = '分数在 60 到 80 之间';
-} else if (score >= 80 && score < 100) {
-  grade = '分数在 80 到 100 之间';
-} else if (score === 100) {
-  grade = '满分';
-}
-console.log(grade); // '分数在 80 到 100 之间'
-```
-
-当`else if {...}`的个数是零个，并且去掉了末尾的`else {...}`，就成了单`if`语句，例如：
-
-``` javascript
-var score = 85,
-    grade;
-
-// 去掉了所有 else if {...} 和末尾的 else {...} 就成了单一的 if 语句
-if (score >= 0 && score < 100) {
-  grade = '分数在 0 到 100 之间';
-}
-
-console.log(grade); // '分数在 0 到 100 之间'
-```
-
-如果多个「条件」的结果都为`true`那么，只执行第一个「条件」为`true`的代码块，当全部「条件」的结果都为`false`时，执行`else`后面的代码块，例如：
+无论如何`if...else if...else...`中至多只有一个代码块会运行，如果多个「条件」的结果都为`true`那么，只执行第一个「条件」为`true`的代码块，当全部「条件」的结果都为`false`时，执行`else`后面的代码块，例如：
 
 ```javascript
 var score = 85,
@@ -527,6 +441,92 @@ if (score === 0) {
   result = 4;  // 被执行了
 }
 console.log(result); // 4
+```
+
+`if...else if...else...`语句中`else if {...}`的个数可以有无数多个，例如下面各个语句都是合法的：
+
+``` javascript
+var score = 85;
+
+// 只有一个 else if {...} 
+if (score >= 0 && score < 60) {
+  console.log('没及格');  // 没执行，因为 score >= 0 && score < 60 返回 false
+} else if (score >= 60 && score <= 100) {
+  console.log('及格');  // 执行了， 因为 score >= 60 && score <= 100 返回 true
+} else {
+  console.log('异常：分数小于 0 或者大于 100'); // 没执行，因为有一个条件的结果是 true
+}
+
+// 有多个 else if {...}
+if (score >= 0 && score < 20) {
+  console.log('分数少于 20'); // 没执行
+} else if (score >= 20 && score < 40) {
+  console.log('分数在 20 到 40 之间'); // 没执行
+} else if (score >= 40 && score < 60) {
+  console.log('分数在 40 到 60 之间'); // 没执行
+} else if (score >= 60 && score < 80) {
+  console.log('分数在 60 到 80 之间'); // 没执行
+} else if (score >= 80 && score < 100) {
+  console.log('分数在 80 到 100 之间'); // 执行了
+} else if (score === 100) {
+  console.log('满分'); // 没执行
+} else {
+  console.log('异常：分数小于 0 或者大于 100'); // 没执行
+}
+```
+
+当`else if {...}`的个数是零个时，就成了`if...else...`语句，例如：
+
+``` javascript
+var score = 85;
+
+// 一个 else if {...} 都没有，就成了 if...else... 语句
+if (score >= 0 && score < 100) {
+  console.log('正常：分数在正常范围内');
+} else {
+  console.log('异常：分数小于 0 或者大于 100');
+}
+```
+
+`if...else if...else...`语句中结尾的`else {...}`不是必须的，例如下面的代码是合法的： 
+
+``` javascript
+var score = 85,
+    grade;
+
+// 去掉了末尾的 else {...} 
+if (score >= 0 && score < 60) {
+  grade = '没及格';
+} else if (score >= 60 && score <= 100) {
+  grade = '及格';
+}
+console.log(grade); // '及格'
+
+// 去掉了末尾的 else {...} 
+if (score >= 0 && score < 60) {
+  grade = '没及格';
+} else if (score >= 60 && score < 80) {
+  grade = '分数在 60 到 80 之间';
+} else if (score >= 80 && score < 100) {
+  grade = '分数在 80 到 100 之间';
+} else if (score === 100) {
+  grade = '满分';
+}
+console.log(grade); // '分数在 80 到 100 之间'
+```
+
+当`else if {...}`的个数是零个，并且去掉了末尾的`else {...}`，就成了单`if`语句，例如：
+
+``` javascript
+var score = 85,
+    grade;
+
+// 去掉了所有 else if {...} 和末尾的 else {...} 就成了单一的 if 语句
+if (score >= 0 && score < 100) {
+  grade = '分数在 0 到 100 之间';
+}
+
+console.log(grade); // '分数在 0 到 100 之间'
 ```
 
 ## 多分枝选择语句 switch
@@ -592,6 +592,8 @@ switch (title) {
 
 console.log(greeting); // '祝你学习进步'
 ```
+> 这里的 `case '学生'` 就相当于 `title === '学生'`。
+
 当「结果」是表达式的时候，比较的就是表达式的返回值，例如：
 
 ``` javascript
@@ -668,7 +670,7 @@ console.log(greeting); // 祝你学习进步
 
 `switch`语句中的`break`是让程序提前结束这个`switch`语句，不再运行继续往下执行它。例如，上边代码中`#1`处的的`break`被执行后，程序会直接跳转到代码的`#2`处，期间所有的代码都不再运行。
 
-如果在某个分支中省略`break`语句，那么程序会继续往下执行，在再次遇到`break`之前，所有分支中的代码都会被运行。
+`switch`语句中如果在某个分支中省略`break`语句，那么程序会执行该`switch`语句往后所有分支的代码，直到在再次遇到`break`语句，或者该`switch`语句结束。
 
 ``` javascript
 var level = 3;
@@ -678,28 +680,29 @@ switch(level) {
   case 4:
     console.log('我没被执行');
   case 3:
-    console.log('被执行 3');
+    console.log('被执行 3'); // 被执行了
   case 2:
-    console.log('被执行 2');
+    console.log('被执行 2'); // 被执行了
   case 1:
-    console.log('被执行 1');
-    break;
+    console.log('被执行 1'); // 被执行了
+    break; // 被执行后跳转到 #1 处
   default:
     console.log('没被执行');
 }
+// #1
 
 // 从 case 3 处一直到语句结束，所有分支的代码都会被执行
 switch(level) {
   case 4:
     console.log('我没被执行');
   case 3:
-    console.log('被执行 3');
+    console.log('被执行 3'); // 被执行了
   case 2:
-    console.log('被执行 2');
+    console.log('被执行 2'); // 被执行了
   case 1:
-    console.log('被执行 1');
+    console.log('被执行 1'); // 被执行了
   default:
-    console.log('被执行 default');
+    console.log('被执行 default'); // 被执行了
 }
 ```
 

@@ -86,7 +86,7 @@
     result.push(min, nom, max);
     ```
 
-10. 将上边代码的`>`换成`<` 即可。
+10. 将上边代码的`result.push(min, nom, max)`换成`result.push(max, nom, min)` 即可。
 
 11. 
 
