@@ -114,5 +114,5 @@ console.log(2); // #1
     
     console.log(2); // #1
     ```
-3. `setTimeout`和`clearInterval`有什么区别。
+3. `clearInterval`和`clearInterval`有什么区别。
 4. 写出 5 秒后在命令行输出`hello world`的代码。
