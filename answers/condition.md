@@ -51,43 +51,6 @@
     }
     ```
 
-9. 如下代码
-
-    ```javascript
-    var num1 = 23,
-        num2 = 888,
-        num3 = 2;
-    var result = [];
-    
-    var min = num1, 
-        nom = num2, 
-        max = num3, 
-        temp;
-    
-    
-    if (min > nom) {
-      temp = min;
-      min = nom;
-      nom = temp;
-    }
-    
-    if (min > max) {
-      temp = min;
-      min = max;
-      max = temp;
-    }
-    
-    if (nom > max) {
-      temp = nom;
-      nom = max;
-      max = temp;
-    }
-    
-    result.push(min, nom, max);
-    ```
-
-10. 将上边代码的`result.push(min, nom, max)`换成`result.push(max, nom, min)` 即可。
-
 11. 
 
  * (a)：如下代码
@@ -126,3 +89,40 @@
       result = 'even'
     }
     ```
+
+9. 如下代码
+
+    ```javascript
+    var num1 = 23,
+        num2 = 888,
+        num3 = 2;
+    var result = [];
+    
+    var min = num1, 
+        nom = num2, 
+        max = num3, 
+        temp;
+    
+    
+    if (min > nom) {
+      temp = min;
+      min = nom;
+      nom = temp;
+    }
+    
+    if (min > max) {
+      temp = min;
+      min = max;
+      max = temp;
+    }
+    
+    if (nom > max) {
+      temp = nom;
+      nom = max;
+      max = temp;
+    }
+    
+    result.push(min, nom, max);
+    ```
+
+10. 将上边代码的`result.push(min, nom, max)`换成`result.push(max, nom, min)` 即可。
