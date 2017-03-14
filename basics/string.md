@@ -138,8 +138,69 @@
 ```
 
 这里介绍了最常用的转义字符，更多的转义字符，可以自行查找相关资料了解。
+
 ## 查看字符串长度
-## [] 操作符，取单个字符
+
+一个字符串由几个字符组成，我们就说这个字符串的长度是几。JavaScript 里我们可以通过字符串的`length`属性查看一个字符串的长度，访问某个东西的属性使用`.`操作符，于是通过`'zifuchuan'.length`之类的写法，就能得到一个字符串的长度。
+
+```javascript
+console.log('12345'.length); // 5
+
+var str = 'abcdefg';
+console.log(str.length); // 7
+
+var len = '987654321'.length;
+console.log(len); // 9
+
+```
+
+## 使用 [] 操作符取单个字符
+
+一个字符串由多个字符组成，其中的每个字符，都是这个字符串的**成员**。例如在字符串`'abcde'`中`'a'`、`'b'`、`'c'`、`'d'`、`'e'`就是它的成员。成员在字符串中的位置叫**索引**，JavaScript 中索引从`0`开始计数，也就是说，字符串中的第一个字符的索引是`0`，第二个字符的索引是`1`，第三个字符的索引是`2`以此类推，下表给出了字符串`'staturday'`中各个字符的索引。
+
+<table>
+ <thead>
+  <tr>
+   <td><strong>成员</strong></td>
+   <td>s</td>
+   <td>t</td>
+   <td>a</td>
+   <td>t</td>
+   <td>u</td>
+   <td>r</td>
+   <td>d</td>
+   <td>a</td>
+   <td>y</td>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td><strong>索引</strong></td>
+   <td>0</td>
+   <td>1</td>
+   <td>2</td>
+   <td>3</td>
+   <td>4</td>
+   <td>5</td>
+   <td>6</td>
+   <td>7</td>
+   <td>8</td>
+  </tr>
+ </tbody>
+</table>
+
+在操作字符串的时候，如果我们想要得到一个字符串中的单个的字符，可以在字符串后使用`[]`操作符把想要获取的成员的索引包裹住，例如：
+
+```javascript
+console.log('abc'[0]); // 'a'
+
+var str = 'staturday';
+console.log(str[1]); 't';
+
+console.log(str[str.length - 1]); // 'y'
+```
+> 小技巧：字符串的`length - 1`恰好就是最后一个成员的索引。
+
 ## 字符串切片
 ## 使用 indexOf 判断子串
 ## 字符串练习
