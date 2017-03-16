@@ -110,7 +110,7 @@
 
 
 ## 转义字符
-字符串中有些特殊的字符可以让 JavaScript 对其进行特殊处理，例如我们已经见过的 `\'` 和 `\"`，这类字符叫转义字符，它们算作一个字符。 JavaScript 中的转义字符跟许多编程语言一样，是在字符前加一个 `\` 实现。包括前面介绍的 `\'` 和 `\"`，这里再继续介绍 `\n` 和 `\\`。
+字符串中有些特殊的字符可以让 JavaScript 对其进行特殊处理，例如我们已经见过的 `\'` 和 `\"`，这类字符叫转义字符，它们算作**一个**字符。 JavaScript 中的转义字符跟许多编程语言一样，是在字符前加一个 `\` 实现。包括前面介绍的 `\'` 和 `\"`，这里再继续介绍 `\n` 和 `\\`。
 
 前面介绍的字符串都是显示在一行以内的，实际上字符串是可以换行显示的，只要在字符串中加入 `\n` ，所以 `\n` 又叫做换行符。
 
@@ -195,14 +195,105 @@ console.log(len); // 9
 console.log('abc'[0]); // 'a'
 
 var str = 'staturday';
-console.log(str[1]); 't';
+console.log(str[1]); // 't';
+```
+
+`[]`的内部还能是表达式，以方便我们在编程的时候动态的获取单个成员，例如：
+
+```javascript
+var str = 'staturday';
+
+console.log(str[1 + 2]); // 't'
+
+var a = 2;
+var b = 2;
+console.log(str[a + b]); // 'u'
+console.log(str[a - 1]); // 't'
 
 console.log(str[str.length - 1]); // 'y'
 ```
-> 小技巧：字符串的`length - 1`恰好就是最后一个成员的索引。
+> 小技巧：一个字符串的`length - 1`恰好就是这个字符串最后一个成员的索引。
 
 ## 字符串切片
-## 使用 indexOf 判断子串
+获取一个字符串中的一部分内容，叫做**字符串切片**。JavaScript 提供了`slice`方法让我们对字符串进行切片。`slice`方法的用法如下伪代码描述。
+
+```
+字符串.slice(开始的索引, 结束的索引);
+```
+
+例如下列表格标注出了字符串`'sunday'`各个成员和索引。
+
+<table>
+ <thead>
+  <tr>
+   <td><strong>成员</strong></td>
+   <td>s</td>
+   <td>u</td>
+   <td>n</td>
+   <td>d</td>
+   <td>a</td>
+   <td>y</td>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td><strong>索引</strong></td>
+   <td>0</td>
+   <td>1</td>
+   <td>2</td>
+   <td>3</td>
+   <td>4</td>
+   <td>5</td>
+  </tr>
+ </tbody>
+</table>
+
+下列代码中从`'sunday'`中获取，`'sun'`、`'day'`、`'und'`、`'nda'`。
+
+```javascript
+var str = 'sunday';
+
+var part1 = str.slice(0, 3); // 获取从索引 0 开始到索引 3 之前的内容
+console.log(part1); // 'sun'
+
+var part2 = str.slice(3, 6); // 获取从索引 3 开始到索引 6 之前的内容
+console.log(part2); // 'day'
+
+var part3 = str.slice(1, 4); // 获取从索引 1 开始到索引 4 之前的内容
+console.log(part2); // 'und'
+
+var part4 = str.slice(2, 5); // 获取从索引 2 开始到索引 5 之前的内容
+console.log(part2); // 'nda'
+```
+
+方法`字符串.slice(开始的索引, 结束的索引)`中，括号里的「开始的索引」和「结束的索引」叫做这个方法的**参数**，例如：
+
+```javascript
+var str = 'sunday';
+
+var part1 = str.slice(0, 3); // 第一个参数是 0， 第二个参数是 3
+console.log(part1); // 'sun'
+
+var part2 = str.slice(3, 6); // 第一个参数是 3， 第二个参数是 6
+console.log(part2); // 'day'
+```
+> 小练习：其实`console.log`也是一个方法，你能说出上边代码中各个`console.log`它们的参数分别是什么么。
+
+在`slice`方法中我们可以省略第二个参数「结束的索引」，那么此时它的行为就变成，获取从「开始的索引」开始一直到字符串结束之前的内容，例如下列代码中从`'sunday'`中获取，`'day'`、`'unday'`、`'sunday'`。
+
+```javascript
+var str = 'sunday';
+
+var part1 = str.slice(3); // 获取从索引 3 一直到字符串结束之前的内容
+console.log(part1); // 'day'
+
+var part2 = str.slice(1); // 获取从索引 1 一直到字符串结束之前的内容
+console.log(part2); // 'unday'
+
+var part3 = str.slice(0); // 获取从索引 0 一直到字符串结束之前的内容
+console.log(part3); // 'sunday'
+```
+
 ## 字符串练习
 1. 下面声明字符串的方式，哪些是对的哪些是错的。
 
