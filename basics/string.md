@@ -294,6 +294,38 @@ var part3 = str.slice(0); // 获取从索引 0 一直到字符串结束之前的
 console.log(part3); // 'sunday'
 ```
 
+## 获取成员的索引
+
+字符串的`indexOf`方法可以获取其中成员的索引，例如下列代码从字符串`'满脑子都是孩子哭了笑了'`中获取`'脑'`和`'是'`的索引：
+
+```javascript
+var str = '满脑子都是孩子哭了笑了';
+var index1 = str.indexOf('脑');
+console.log(index1); // 1
+
+var index2 = str.indexOf('是');
+console.log(index2); // 4
+```
+
+`indexOf`的参数除了可以是单个的字符，还可以是一个字符串，例如下列代码中从字符串`'满脑子都是孩子哭了笑了'`中获取，`'孩子'`和`'哭了笑了'`的索引：
+
+```javascript
+var str = '满脑子都是孩子哭了笑了';
+var index1 = str.indexOf('孩子');
+console.log(index1); // 5
+
+var index2 = str.indexOf('哭了笑了');
+console.log(index2); // 7
+```
+
+如果找不到成员，`indexOf`就会返回`-1`，例如：
+
+```javascript
+var str = '满脑子都是孩子哭了笑了';
+var index = str.indexOf('404');
+console.log(index); // -1
+```
+
 ## 字符串练习
 1. 下面声明字符串的方式，哪些是对的哪些是错的。
 
