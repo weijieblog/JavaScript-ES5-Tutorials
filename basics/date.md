@@ -271,8 +271,18 @@ console.log(Date.parse(1083576608000)); // NaN
      「你写的代码」    
     };
     timeFormat(1490124286573); // '2017-3-22 3:24:46'
-    timeFormat('Mon May 03 2004 17:30:08 GMT+0800 (CST)'); // '2004-05-03 17:30:08'
+    timeFormat('Mon May 03 2004 17:30:08 GMT+0800 (CST)'); // '2004-5-3 17:30:08'
     ```
+2. 写一个函数，将各种格式的计算机时间转化为「YYYY/M/D H:M:S」的形式。
+
+    ```
+    var timeFormat = function (time) {
+     「你写的代码」    
+    };
+    timeFormat(1490124286573); // '2017/3/22 3:24:46'
+    timeFormat('Mon May 03 2004 17:30:08 GMT+0800 (CST)'); // '2004/5/3 17:30:08'
+    ```
+
 3. 写一个函数，判断某个「Date 对象」是否合法。
 
     ```
@@ -283,7 +293,7 @@ console.log(Date.parse(1083576608000)); // NaN
     isValidDate(new Date('哈哈哈哈哈')); // false
     ```
 
-4. 评估函数`a`和函数`b`各自在参数为`1000000`时执行的耗时。
+4. 写代码评估函数`a`和函数`b`各自在参数为`1000000`时执行的耗时。
 
     ```
     var a = function (times) {
@@ -297,9 +307,20 @@ console.log(Date.parse(1083576608000)); // NaN
     var b = function (times) {
       var result = [];
       for (var i = 0; i <= times; i++) {
-        result[result.length] = {};
+        result[i] = {};
       }
       return result;
     }
     ```
 5. 写代码计算时间`1490124286573`距离现在过去了多少小时。
+6. 写代码计算时间`1490186974431`和`1490124286573`相差多少小时。
+7. 写一个函数，将各种计算机时间格式转化为「YYYY-MM-DD HH:MM:SS」的形式。
+
+    ```
+    var timeFormat = function (time) {
+     「你写的代码」    
+    };
+    timeFormat(1490124286573); // '2017-03-22 03:24:46'
+    timeFormat('Mon May 03 2004 17:30:08 GMT+0800 (CST)'); // '2004-05-03 17:30:08'
+    ```
+    > 注意：当月份、日期、时、分、秒为个位数时，在它们前面的数字`0`
