@@ -11,7 +11,7 @@
     * [函数](basics/function.md)
     * [周期任务和计时任务](basics/timer.md)
     * [Date 对象](basics/date.md)
-    * [Math 对象]()
+    * [Math 对象](basics/math.md)
 
 * [JavaScript 面向对象编程基础](oop/README.md)
     * [批量生产对象的需求]()
