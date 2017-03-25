@@ -14,10 +14,11 @@
     * [Math 对象](basics/math.md)
 
 * [JavaScript 面向对象编程基础](oop/README.md)
-    * [批量生产对象的需求]()
-    * [构造函数和对象]()
-    * [JavaScript 内建的构造函数]()
-    * [原型继承]()
+    * [创建对象]()
+    * [构造函数和原型]()
+    * [继承]()
+    * [属性描述符]()
+    * [内置对象]()
 
 * [JavaScript 的运行细节](advanced/README.md)
     * [值和引用]()
