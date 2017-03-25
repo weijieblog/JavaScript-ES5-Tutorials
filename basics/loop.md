@@ -339,7 +339,7 @@ for (var 键名 in 对象) {
 > 1. 「键名」可以是任意合法的标识符。
 > 2. 「键名」在迭代的过程中会逐个被赋值为「对象」的属性名。
 
-例如下列代码逐个输出了对象的属性名和属性值：
+记住，**`for`语句用来遍历数组或者字符串，而`for...in`语句用来遍历对象**，例如下列代码逐个输出了对象的属性名和属性值：
 
 ```javascript
 var book = {
@@ -355,7 +355,7 @@ for(var key in book) {
 > 1. 此时「键名」被起名为`key`
 > 2. 随着循环的进行`key`的值会先是`'title'`再是`'author'`最后是`'years'`每轮循环改变一次。
 
-与操作遍历数组类似，我们能够遍历一个对象了以后，也可以对对象进行复杂的操作。比如下列代码获取了对象`book`的全部属性名，存放在数组`result`中：
+与操作遍历数组类似，我们能够遍历一个对象了以后，也可以对对象进行复杂的操作。比如下列代码获取了对象`book`的全部属性名，存放在数组`keys`中，获取了全部的属性值，放在了`values`中：
 
 ```javascript
 var book = {
@@ -364,12 +364,14 @@ var book = {
   years: 1859
 };
 
-var result = [];
+var keys = [], values = [];
 for(var key in book) {
-  result.push(key);
+  keys.push(key);
+  values.push(book[key]);
 }
 
-console.log(result); // ['title', 'author', 'years']
+console.log(keys); // ['title', 'author', 'years']
+console.log(values); // ['双城记', '狄更斯', 1859]
 ```
 
 ## 嵌套循环
