@@ -303,8 +303,23 @@ var d = tail([
 /* 等等等等 */
 ```
 
+一个函数内部可以有多条`retuen`语句，例如下边代码中的函数`isFemale`根据参数`gender`的值判断返回不同的布尔值。
+
+```javascript
+// 如果 gender 的值为 'female' 则返回 true 
+// 否则返回 false
+var isFemale = function (gender) {
+  siwtch (gender) {
+    case 'female':
+      return true;
+    default:
+      return false;
+  }
+}
+```
+
 ### return 语句会让函数直接结束
-上文提到的`return`语句有一个特性，就是当函数执行完该语句之后，函数会直接结束，无论函数体中是否还有其他代码。例如，下面代码只会在控制台输出`1`：
+一个函数内部可以有多条`retuen`语句，但是只有其中一条`retuen`会被执行，因为`return`在执行之后函数会直接退出。，就是当函数执行完该语句之后，函数会直接结束，无论函数体中是否还有其他代码。例如，下面代码只会在控制台输出`1`：
 
 ```javascript
 function count() {

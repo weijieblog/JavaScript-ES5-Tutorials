@@ -1,6 +1,5 @@
 ## 面向对象编程
 
-
 一个大型程序，往往都是由多个文件，多个模块，在多人协作下完成的。想象一下一个网站，它有多个页面，每个页面有许多的按钮、输入框以及下拉菜单等等控件，每个控件长得都不一样，并且它们都可以被用户操作，每次在用户操作后都有不一样的反馈。我们想要写程序描述这一整个网站的从头到尾的运作过程太复杂了，就算是多人协作也无从下手。
 
 先人们为了解决这种难题，就将一个网站分成了许多部分，每个控件都被他们抽象为了一个对象，通过给对象添加属性来描述这个控件的外观、位置等等，通过给对象添加属性来描述控件的行为。如此一来，开发团队的每个人都负责几个控件，最后将他们组织起来，就能成为一个网站，这就是面向对象编程。
@@ -46,11 +45,59 @@ var createCircle = function (x, y, radius) {
 }
 
 var a = createCircle(1,2,3);
-var a = createCircle(4,5,6);
+var b = createCircle(4,5,6);
+console.log(a.toString());
+console.log(b.toString());
 ```
 
-如此一来，我们就得到了一个可以批量创建对象的工厂函数，当我们需要修改
+工厂函数适合用作当批量创建的对象的作用比较单一的情况，最典型的情况就是创建的**对象只用来记录某些数据**，例如下面的`book`对象，它只记录了书本的信息。
 
-未完待续……
+```javascript
+var createBook = function (title, author, years) {
+  var book = {};
+  book.title = title;
+  book.author = author;
+  book.years = years;
+  return book;
+}
+```
+
+但如果情况复杂，那么工厂函数就有如下缺点：
+
+1. 无法通过对象实例判断对象的来源。
+2. 对象中没法共用一些属性和方法。
+
+如果项目规模宏大，第一个缺点会造成团队协作的困难，第二个缺点会造成巨大的内存浪费。例如我们之前定义的`createCircle`函数，就表现出了上述缺点，如下代码描述：
+
+```javascript
+var a = createCircle(1,2,3);
+var b = createCircle(4,5,6);
+
+// 我们无法完成下列 if 语句中的判断条件
+if (/* a 和 b 都是通过 createCircle 创建的对象*/) {
+  // 一些逻辑
+}
+
+// a 和 b 都有 toString 函数，他们各自的 toString 函数的逻辑是一样的
+console.log(a.toString()); // 'x: 1, y: 2'
+console.log(b.toString()); // 'x: 4, y: 5'
+
+// 我们修改了 a.toString 但 b.toString 不受任何影响
+a.toString = function () {
+  return 'a';
+}
+console.log(a.toString()); // 'a'
+console.log(b.toString()); // 'x: 4, y: 5'
+
+// 也就是说 a 和 b 中的 toString 是两个函数，而没有共用同一个函数
+// 我们应该共用同一个函数，否则当我们使用 createCircle 创建了 10000 个对象的时候
+// 就会有 10000 个一模一样的 toString 方法，这对内存是巨大的浪费
+```
+
+因此，当批量创建的对象情况比较复杂的时候，我们就需要一种新的批量创建对象的方式了，这种创建对象的方式，将是 JavaScript 面向对象编程的基础，有许多面向对象的思想都基于它来实现，它就是**构造函数**。
+
+尽管如此，工厂函数在特定的情况下还是会有用处，在批量创建对象的对象功能单一的时候。
 
 ## 构造函数
+
+未完待续......
