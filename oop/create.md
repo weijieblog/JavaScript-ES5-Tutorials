@@ -66,7 +66,7 @@ var createBook = function (title, author, years) {
 但如果情况复杂，那么工厂函数就有如下缺点：
 
 1. 无法通过对象实例判断对象的来源。
-2. 对象中没法共用一些属性或方法。
+2. 各个对象没法共用一些属性或方法。
 
 如果项目规模宏大，第一个缺点会造成团队协作的困难，第二个缺点会造成巨大的内存浪费。例如我们之前定义的`createCircle`函数，就表现出了上述缺点，如下代码描述：
 
@@ -121,9 +121,9 @@ var b = new Circle(4,5,6);
 console.log(a.toString()); // x: 1, y: 2
 console.log(b.toString()); // x: 4, y: 5
 ```
-> 根据编程中的传统规范，构造函数使用大写字母开头，当你使用大写字母开头了，别人就懂这是构造函数了。
+> 根据编程中的传统约定，构造函数使用大写字母开头，当你使用大写字母开头了，别人就懂这是构造函数了。
 
-我们通过`new Circle(...)`的形式使用构造函数，就能得到一个新的对象了，当你在控制台上输出通过构造函数创建的对象的时候，控制台会告诉你它的来源。
+我们通过`new Circle(...)`的形式使用构造函数，就能得到一个新的对象了，当你在控制台上输出通过构造函数创建的对象的时候，控制台会告诉你它的来源。注意，`new`操作符是不能省略的。
 
 ```javascript
 var a = createCircle(1,2,3);
@@ -133,13 +133,151 @@ console.log(a); // object
 console.log(b); // Circle
 ```
 
-通过构造函数创建的对象，叫做这个构造函数的**实例**，例如上边代码中的`b`就是构造函数`Circle`的实例，在编程中我们只需对实例使用 `instanceof` 操作符，就能在编程中判断某个实例的来源了。
+通过构造函数创建的对象，叫做这个构造函数的**实例**，例如上边代码中的`b`就是构造函数`Circle`的实例，在编程中我们只需对实例使用 `instanceof` 操作符能判断它的来源。
 
 ```javascript
-var b = new Circle(4,5,6);
-b instanceof Circle; // true
+var isCircle = b instanceof Circle;
+console.log(isCircle); // true
 ```
 
-构造函数一开始就解决了工厂函数中「无法通过对象实例判断对象的来源」这个缺点。
+构造函数一开始就解决了工厂函数中「无法通过对象实例判断对象的来源」这个缺点。至于第二个缺点「各个对象没法共用一些属性或方法」，则需要原型相关的知识，那是下一章的内容，在进入下章之前，构造函数和普通函数有什么区别，如此能够方便我们更加好的理解和使用构造函数。首先，我们来看看工厂函数和构造函数的异同。
 
-未完待续...
+```javascript
+// 构造函数
+var Circle = function (x, y, radius) {
+  // 将参数赋值给 this 变量
+  this.x = x;
+  this.y = y;
+  this.radius = radius;
+  this.toString = function () {
+    return 'x: ' + this.x + ', y: ' + this.y;
+  };
+}
+var a = new Circle(1,2,3); // 调用时需要使用 new 操作符
+
+// 工厂函数
+var createCircle = function (x, y, radius) {
+  
+  // 声明一个对象 circle，并将参数作为 circle 的属性 
+  var circle = {
+    x: x,
+    y: y,
+    radius: radius,
+    toString: function () {
+      return 'x: ' + this.x + ', y: ' + this.y;
+    },
+  };
+  
+  // 返回 circle
+  return circle;
+}
+var b = createCircle(4,5,6); // 直接调用
+```
+
+对比上边的代码我们就可以看出，它们都是函数（都通过函数表达式得到）。它们的内部构造非常类似，都是根据参数给某个对象添加属性，区别是工厂函数`return`了这个变量但构造函数函数并没有。另外构造函数调用时需要使用 `new` 操作符而工厂函数不需要。
+
+工厂函数我们已经十分熟悉了，它就是一个返回值是一个对象的普通函数。而构造函数则有点儿奇特，它没有`return`却能得到调用结果，在它的内部，我们是给一个特殊的`this`对象添加属性，调用时得加上`new`操作符。但其实，构造函数本是一个普通函数，它之所以成为构造函数，关键就是调用时的`new`操作符。比起直接调用某个函数，我们在使用`new`操作符调用函数时 JavaScript 会多做如下几件事：
+
+1. 创建一个可以通过`instanceof`追踪到来源的对象。
+2. 将这个对象赋值给函数体中的`this`变量。
+3. 在函数体的代码被执行后，返回这个新对象。
+
+如果我们在调用`Circle`时没使用`new`操作符，那么它将与普通函数没什么区别。
+
+```javascript
+var a = Circle(1,2,3);
+console.log(a); // undefined
+```
+因为`Circle`内部没有`return`语句，所以直接调用的结果是`undefined`，如果我们对`Circle`做出如下改造让它返回某个结果，那么我们在直接调用时就能得到这个结果，如下。
+
+```javascript
+var Circle = function (x, y, radius) {
+  this.x = x;
+  this.y = y;
+  this.radius = radius;
+  this.toString = function () {
+    return 'x: ' + this.x + ', y: ' + this.y;
+  };
+  return 'x: ' + x + ', y: ' + y + ', radius: ' + radius; // 返回一个字符串
+}
+
+var a = Circle(1,2,3);
+console.log(a); // 'x: 1, y: 2, radius: 3'
+
+var b = new Circle(1,2,3);
+console.log(b instanceof Circle); // true
+```
+
+说到这里，是不是发觉上边代码中的`Circle`函数和之前学的`Date`函数有些相似呢。其实`Date`函数就是一个典型的构造函数，用来批量创建「Date 对象」。它直接调用的结果是也一个字符串，而加上了`new`操作符以后就将得到一个「Date 对象」。
+
+```javascript
+var a = Date();
+console.log(typeof a); // string
+
+var b = new Date();
+console.log(typeof b); // object
+console.log(b instanceof Date); // true
+```
+> 如你所见，因为`Date`函数是构造函数所以它也是大写字母开头。
+
+好了`Date`函数我们先放到一边。
+
+在`Circle`函数的函数体中，我们给`this`变量添加了许多属性，我们知道当我们使用`new`操作符调用`Circle`函数时`this`变量会是一个新创建的对象。而如果当我们直接调用`Circle`时，其内部的`this`变量的值就变得非常复杂，在不同的情况下，它有可能是全局对象（全局作用域），有可能是某个不属于自己的对象，等等等等。
+
+```javascript
+var a = Circle(1,2,3);
+
+// 当我们直接调用 Circle 时，稀里糊涂的在全局作用域中加入了四个变量，
+// 这是很危险的事情，如果全局作用域中之前有其他人的声明的变量 x 或者 y 那么原先的值就会被覆盖
+console.log(x, y, radius, toString); // 1 2 3 function () {....}
+```
+> 上面的代码在有些浏览器中可以看到结果，这取决于浏览器运行着 JavaScript 的哪种模式。
+
+随着学习的推进大家会明白为什么这里的`this`会是全局作用域，总而言之，如果我们直接调用`Circle`，其内部`this`变量指代不明这种情况有可能带来许多不可预料的问题，除非你非常非常有把握，否则一定不能在调用构造函数的时候省略`new`操作符。
+
+JavaScript 中所有内建的构造函数（如`Date`函数）都可以直接调用并且没有任何问题。我们希望自己写的构造函数也能如此，以避免在多人协作的时候，有某个粗心的人在使用我们写的构造函数时忘记加`new`从而给整个程序带来隐患，可以在创建构造函数的时候通过`instanceof`操作符判断`this`的来源，如果`this`来源于当前构造函数则说明在这个构造函数在被调用时是加了`new`的，否则没加`new`，例如本章中的`Circle`可以通过如下方法改造，从而避免在没加`new`时给程序带来隐患。
+
+```javascript
+var Circle = function (x, y, radius) {
+  // 如果这个 this 变量起源于 Circle 
+  // 那么说明此时 Circle 在被调用时是加了 new 的
+  // 可以大胆的给 this 赋值
+  if (this instanceof Circle) {
+    this.x = x;
+    this.y = y;
+    this.radius = radius;
+    this.toString = function () {
+      return 'x: ' + this.x + ', y: ' + this.y;
+    };
+  } else {
+    // 否则就是在调用时没加 new 
+    // 直接返回字符串
+    return 'x: ' + x + ', y: ' + y + ', radius: ' + radius; // 返回一个字符串
+  }
+}
+```
+
+当然，在不加`new`时不一定非得返回字符串，如果希望不管这个构造函数在被调用时无论加没加`new`都返回正确的实例也是可以的，那么就需要对本章中的`Circle`进行如下改造：
+
+```javascript
+var Circle = function (x, y, radius) {
+  if (this instanceof Circle) {
+    this.x = x;
+    this.y = y;
+    this.radius = radius;
+    this.toString = function () {
+      return 'x: ' + this.x + ', y: ' + this.y;
+    };
+  } else {
+    // 调用构造函数时不喜欢加 new ？ 
+    // 看本工程师给你强行加一个。
+    return new Circle(x, y, radius);
+  }
+}
+```
+
+就算如此，也应该谨记，在使用构造函数时除非对不加`new`的结果非常有把握，否则一定别忘了`new`。
+
+到这里为止，我们还是没有解决工厂函数的第二个缺点，即「各个对象没法共用一些属性或方法」，在下一章中我们会开始学习 JavaScript 面向对象的灵魂——**原型**，它不仅可以解决这个问题，还可以使用它来实现更多面向对象的思想。同时**原型**也是理解 JavaScript 这门语言许多机制的基础，比如为什么字符串明明不是对象却可以用过成员操作符访问到`length`属性。
+
+## 创建对象练习
