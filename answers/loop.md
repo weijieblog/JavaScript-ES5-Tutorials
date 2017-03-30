@@ -158,3 +158,74 @@
     }
     console.log(gradeOne);
     ```
+
+9. 如下
+
+    ```javascript
+    var gradeOne = {
+      classOne: ['语蕊', '杨文丽', '耿雨真', '能宏达', '介山槐'],
+      classTwo: ['暨嘉运', '白秋', '永黛娥', '廖俊风'],
+      classThree: ['苌晶滢', '夏菡', '慕容天青', '释鸿文', '隋乐咏', '衣月桂', '闫雨华']
+    };
+    
+    // 解法 1
+    var namelist = [];
+    for (var key in gradeOne) {
+      namelist = namelist.concat(gradeOne[key]);
+    }
+    console.log(namelist);
+    
+    // 解法 2
+    var namelist = [];
+    for (var key in gradeOne) {
+      for (var i = 0; i < gradeOne[key].length; i++) {
+        namelist.push(gradeOne[key][i]);
+      }
+    }
+    console.log(namelist);
+    ```
+
+10. 如下
+
+    ```javascript
+    var nums = [
+      [1, 2, 3, 4],
+      [5, 6, 7, 8, 9, 10],
+      [11, 12, 13, 14, 15],
+      [16, 17, 18]
+    ];
+    var result = 0;
+    for (var i = 0; i < nums.length; i++)  {
+      for (var j = 0; j < nums[i].length; j++) {
+        result += nums[i][j];
+      }
+    }
+    console.log(result);
+    ```
+11. 如下
+
+    ```javascript
+    var nums = [
+      [1, 2, 3, 4],
+      [5, 6, 7, 8, 9, 10],
+      [11, 12, 13, 14, 15],
+      [16, 17, 18]
+    ];
+    
+    // 解法 1
+    var result = [];
+    for (var i = 0; i < nums.length; i++)  {
+      result = result.concat(nums[i]);
+    }
+    console.log(result);
+    
+    // 解法 2
+    var result = [];
+    for (var i = 0; i < nums.length; i++)  {
+      for (var j = 0; j < nums[i].length; j++) {
+        result.push(nums[i][j]);
+      }
+    }
+    console.log(result);    
+    
+    ```
