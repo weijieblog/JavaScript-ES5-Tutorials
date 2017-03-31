@@ -14,8 +14,8 @@ var circle = {
   y: 55,
   radius: 1,
   toString: function () {
-    return 'x: ' + this.x + 
-           ', y: ' + this.y;
+    return 'x: ' + x + 
+           ', y: ' + y;
   },
 };
 console.log(point.toString());
