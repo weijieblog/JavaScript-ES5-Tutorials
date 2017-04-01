@@ -29,13 +29,13 @@ console.log(a.toString === b.toString); // false
 
 ## prototype 属性
 
-要解决上述问题，就需要使用到函数的`prototype`属性，这个属性是个对象，称之为**原型对象**，它就是 JavaScript 面向对象编程的灵魂。任何函数都有一个原型对象，它是在函数一被创建出来就存在了的。而原型对象一开始就有`constructor`属性，该属性的值是函数本身。
+要解决上述问题，就需要使用到函数的`prototype`属性，这个属性的值是个对象，称之为**原型对象**，它就是 JavaScript 面向对象编程的灵魂。任何函数都有一个原型对象，它是在函数一被创建出来就存在了的。而原型对象一开始就有`constructor`属性，该属性的值是函数本身。
 
 ```javascript
 // 创建一个函数
 var func = function () {};
 
-// 函数一出生就有 prototype 属性
+// 该函数一出生就有 prototype 属性
 console.log(func.prototype); // {constructor: func}
 
 // prototype 对象一出生就带有 constructor 属性
@@ -48,7 +48,7 @@ console.log(Circle.prototype); // {constructor: Circle}
 console.log(Circle.prototype.constructor === Circle); // true
 ```
 
-JavaScript 中的东西一出生就带上某些玩意儿已经不是什么稀奇的事情了，比如数组和字符串一开始就有`length`，但是函数的`prototype`属性既然能够成为面向对象编程的灵魂自然有过人之处。那就是当我们通过`new`操作符调用一个构造函数的时候，其`prototype`属性上的内容可以给所有这个构造函数创建出来的实例访问到。
+JavaScript 中的东西一出生就带上某些玩意儿已经不是什么稀奇的事情了，比如数组和字符串一开始就有`length`属性，但是函数的`prototype`属性既然能够成为面向对象编程的灵魂自然有过人之处。那就是当我们通过`new`操作符调用一个构造函数的时候，这个构造函数`prototype`属性上的内容可以给所有这个构造函数创建出来的实例访问到。
 
 ```javascript
 var a = new Circle(1,2,3);
@@ -59,7 +59,7 @@ console.log(a.constructor === Circle); // true
 console.log(b.constructor === Circle); // true
 ```
 
-实例不仅仅能够访问到其构造函数中`prototype`里的内容，更重要的是`prototype`中的内容是由全部实例共享的。
+这个时候，某个实例的**原型**，就是其构造函数的`prototype`属性。例如上边代码中的`Circle.prototype`就是实例`a`和`b`的**原型**。实例不仅仅能够访问到其原型中的内容，更重要的是，其原型中的内容是由全部实例共享的。
 
 ```javascript
 // 在 Circle.prototype 中添加 func 方法
@@ -81,14 +81,14 @@ console.log(a.func === Circle.prototype.func); // true
 console.log(b.func === Circle.prototype.func); // true
 
 // 而原来的 toString 方法则不是，
-// 原来的 toString 方法是 a 和 b 各有一份
+// 原来的 toString 方法是 a 和 b 中各有一份
 console.log(a.toString === b.toString); // false
 
 // Circle.prototype 中压根儿就没有 toString 方法
 console.log(Circle.prototype.toString); // undefined
 ```
 
-不仅仅是方法，属性也是可以通过这种方式共享的。
+不仅仅是函数，其他类型的属性也可以通过这种方式共享。
 
 ```javascript
 Circle.prototype.name = 'circle';
@@ -128,7 +128,12 @@ console.log(b.toString()); // 'x: 4, y: 5'
 
 ## 对象自身属性和原型属性
 
-### 特权属性、私有属性、公有属性
+既然我们可以同时访问到对象自身和它原型上的属性，那么就会遇到一些问题，如下：
+
+1. 当对象自身的属性和原型同名属性的时候，JavaScript 是如何处理的。
+2. 我们要如何判断实例某个属性是它自身的还是它原型里的。
+
+
 
 
 ## 动态添加和删除实例共享属性
