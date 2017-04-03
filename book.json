@@ -9,6 +9,15 @@
             "family": "serif",
             "size": 3
         },
+        "sharing": {
+            "facebook": false,
+            "twitter": false,
+            "google": false,
+            "instapaper": false,
+            "vk": false,
+            "weibo": true,
+            "all": ["weibo"] 
+        },
         "github": {
             "url": "https://github.com/WeiJieGitHub/JavaScript-ES5-Tutorials"
         },
