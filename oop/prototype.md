@@ -29,7 +29,7 @@ console.log(a.toString === b.toString); // false
 
 ## 构造函数的 prototype 对象
 
-要解决上述问题，就需要使用到函数的`prototype`属性，这个属性的值是个对象，称之为**原型对象**，它就是 JavaScript 面向对象编程的灵魂。任何函数都有一个原型对象，它是在函数一被创建出来就存在了的。而原型对象一开始就有`constructor`属性，该属性的值是函数本身。
+要解决上述问题，就需要使用到函数的`prototype`属性，这个属性的值是个对象，它就是 JavaScript 面向对象编程的灵魂。任何函数都有一个`prototype`属性，它是在函数一被创建出来就存在了的。而`prototype`对象一开始就有`constructor`属性，该属性的值是函数本身。
 
 ```javascript
 // 创建一个函数
@@ -83,9 +83,6 @@ console.log(b.func === Circle.prototype.func); // true
 // 而原来的 toString 方法则不是，
 // 原来的 toString 方法是 a 和 b 中各有一份
 console.log(a.toString === b.toString); // false
-
-// Circle.prototype 中压根儿就没有 toString 方法
-console.log(Circle.prototype.toString); // undefined
 ```
 
 不仅仅是函数，其他类型的属性也可以通过这种方式共享。
@@ -139,14 +136,14 @@ NullObject.prototype.name = '柳柳';
 
 var a = new NullObject();
 
-// 访问实例 a 原型上的属性
+// a.name 访问到的是实例 a 原型（也就是 NullObject.prototype）上的属性
 console.log(a.name); // '柳柳'
 
 // 给实例 a 自身加上 name 属性
 // 现在实例 a 和它的原型上都有 name 属性
 a.name = '沫沫';
 
-// 此时我们访问到的就是实例 a 自身的属性了
+// 此时 a.name 访问到的就是实例 a 自身的属性
 console.log(a.name); // '沫沫'
 
 // 当然原型上的 name 属性还在
@@ -157,12 +154,12 @@ var b = new NullObject();
 console.log(b.name); // '柳柳'
 
 // 我们删除实例 a 自身的 name 属性以后
-// 就又可以访问到原型上的 name 属性了
+// a.name 访问到的又是原型上的 name 属性了
 delete a.name;
 console.log(a.name); // '柳柳'
 ```
 
-如果我们想要判断某个属性是否存在于某个实例自身或是其原型上时就可以使用`in`操作符，例如：
+如果我们想要判断某个属性是否存在于某个实例自身或是其原型上时可以使用`in`操作符，例如：
 
 ```javascript
 var NullObject = function () {}
@@ -190,9 +187,7 @@ console.log('gender' in a); // false
 > a.age = 17;
 > 
 > for (var key in a) {
->   if (key === 'name') {
->     console.log(key); // name
->   }
+>   console.log(key); // 不仅会输出 'age' 还会输出 'name'
 > }
 > ```
 
@@ -211,15 +206,95 @@ console.log(a.hasOwnProperty('age')); // true
 // name 属性虽然在原型上，但不在实例自身，返回 false
 console.log(a.hasOwnProperty('name')); // false
 
-// gender 属性不在原型上也不在实例自身，返回 false
+// 总之只要不在实例自身，一律返回 false
 console.log(a.hasOwnProperty('gender')); // false
 ```
 
+有时候区分某个属性是实例自身的还是其原型上的是非常重要的，比如在现实开发中经常会有合并对象的需求，那么我们就可以实现一个`merge`函数来完成相关操作，其实现如下：
 
-... 未完待续
+```javascript
+var Info = function (age, gender) {
+  this.age = age
+  this.gender = gender
+}
+Info.prototype.run = function () {};
+
+// 将对象 b 的属性合并到 a 中
+var merge = function (a, b) {
+  for (var key in b) {
+    // 判断 key 是在 b 自身还是其原型上
+    // 防止错误的将 b 原型上的属性合并到 a 中
+    if (b.hasOwnProperty(key)) {
+      a[key] = b[key];
+    }
+  }
+  return a;
+}
+
+var a = {name: 'Lucy'};
+var b = new Info(17, 'female');
+
+merge(a, b);
+
+// 对象 b 原型中的 run 属性没有被合并到 a 中
+console.log(a); // {name: 'Lucy', age: 17, gender: 'female'}
+```
+> 删掉上边代码中的判断语句再试试，你就会发觉`b`原型里的`run`属性出现在了`a`中，把一个`b`对象自身没有的属性合并到了`a`中，这很不合理。
 
 ## 找到实例的原型 
 
+某些特殊的情况下，我们需要通过实例取得它的原型。之前介绍过，每个函数的`prototype`属性都自带有一个`constructor`属性，该属性的值是函数自身。另外函数的实例可以访问到`prototype`对象中的属性，所以函数的实例可以通过`constructor.prototype`访问到它的原型。
+
+```javascript
+var NullObject = function () {}
+var a = new NullObject();
+
+console.log(a.constructor === NullObject); // true
+console.log(a.constructor.prototype === NullObject.prototype); // true
+```
+
+正常情况下，通过上面代码的方式找到某个实例的原型是没问题的，除了语句长一些。但是夜路走多了总会碰到鬼，比如在多人合作的时候，某个吃瓜群众给实例自身加上了`constructor`属性并且赋值为一个字符串、再比如原型上的`constructor`的值被改动过，那么上面的代码就失效了，从而引发一些列的 bug 导致我等码农留下来加班。因此 JavaScript 提供了`Object.getPrototypeOf`方法让我们获取某个实例的原型，该方法接受一个参数，就是实例。返回值是这个实例的原型，如果这个实例没有原型，则返回`null`：
+
+```javascript
+var NullObject = function () {}
+var a = new NullObject();
+
+// Object.getPrototypeOf 可以获取实例 a 的原型
+var proto = Object.getPrototypeOf(a);
+console.log(proto === NullObject.prototype); // true
+
+// 就算 a.constructor 和
+// NullObject.prototype.constructor 被改动过也可以正常生效
+a.constructor = 'mama';
+NullObject.prototype.constructor = 'haha';
+proto = Object.getPrototypeOf(a);
+console.log(proto === NullObject.prototype); // true
+```
+> 有些代码中使用实例的`__proto__`属性来获取该实例的原型，这在大部分浏览器里是可以生效的。但是`__proto__`属性长得比较丑并且不是标准属性，所以还是推荐大家使用标准的`Object.getPrototypeOf`方法。
+
 ## 原型的动态特性
 
+介绍了如此多实例和原型的关系，现在来说说原型的动态性。所谓动态特性，就是我们修改了某个构造函数的`prototype`属性，那么改动会实时的对这个构造函数所创建出来的实例生效，这是 JavaScript 面向对象编程中一个很有意思的地方，比如：
+
+```javascript
+var NullObject = function () {}
+
+var a = new NullObject();
+var b = new NullObject();
+
+// 一开始实例 a 和 b 都不能访问到 name 属性
+console.log(a.name, b.name); // undefined undefined
+
+// 给原型加入 name 属性后，我们不用对 a 和 b 做任何修改
+// 就能够访问到 name 属性了
+NullObject.prototype.name = 'haha';
+console.log(a.name, b.name); // 'haha' 'haha'
+```
+
 ## 总结
+
+在 JavaScript 中原型是个相对难懂的概念，许多书籍和文章对其的介绍都语焉不详，我本人在学习 JavaScript 的过程中也在里面绕了很久，本章介绍了原型的作用，及其和实例的关系。
+
+总结一下就是，构造函数的`prototype`属性就是它所创建的实例的原型，原型是个对象，它其中的属性会跟所有这个构造函数创建出来的实例共享，当实例和其原型上的属性同名时，我们会首先取得实例上的属性，实例的`hasOwnProperty`方法帮助我们判断某个属性是否属于实例自身，`Object.getPrototypeOf`方法帮助我们通过实例获取它的原型，我们对原型作出改动，会立即影响到所有它的实例。
+
+上一章是这一章的基础，这章起着承上启下的作用，下章将介绍继承和原型链，它们是 JavaScript 面向对象编程中很重要的概念，也是理解这门语言许多机制的关键。

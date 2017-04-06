@@ -16,7 +16,7 @@
 * [JavaScript 面向对象编程基础](oop/README.md)
     * [创建对象](oop/create.md)
     * [构造函数和原型](oop/prototype.md)
-    * [继承]()
+    * [原型链和继承]()
     * [属性描述符]()
     * [内置对象]()
 
