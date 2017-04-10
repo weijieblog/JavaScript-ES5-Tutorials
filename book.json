@@ -2,13 +2,8 @@
     "title": "JavaScript 语言教程",
     "description": "面向初学者的 JavaScript 语言教程",
     "language": "zh",
-    "plugins": ["mathjax", "-prism", "highlight", "-github", "ba", "github-buttons"],
+    "plugins": ["mathjax", "highlight", "fontsettings", "-search", "-lunr", "ba", "github", "github-buttons", "mermaid-atom-mden"],
      "pluginsConfig": {
-        "fontsettings": {
-            "theme": "night",
-            "family": "serif",
-            "size": 2
-        },
         "sharing": {
             "facebook": false,
             "twitter": false,
@@ -18,11 +13,11 @@
             "weibo": true,
             "all": ["weibo"] 
         },
-        "github": {
-            "url": "https://github.com/WeiJieGitHub/JavaScript-ES5-Tutorials"
-        },
         "ba": {
             "token": "b3a5440ccbe24d4b5419be66ad3e3581"
+        },
+        "github": {
+            "url": "https://github.com/WeiJieGitHub/JavaScript-ES5-Tutorials"
         },
         "github-buttons": {
             "repo": "WeiJieGitHub/JavaScript-ES5-Tutorials",
