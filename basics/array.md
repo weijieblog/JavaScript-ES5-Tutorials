@@ -617,9 +617,9 @@ console.log(a[0][1]); // 0
  var namelist = ['Jognny', 'Lori', 'Quadro', 'Hank', 'Collin', 'Roberta'];
  ``` 
  * a. 写出从中删除`'Quadro'`的代码。
- * b. 写出从中删除`'Lori'``'Quadro'``'Hank'`的代码。
- * c. 写出在`'Lori'`前插入`'Lily'``'Bella'`的代码。
- * d. 将原数组中的`'Hank'``'Collin'``'Roberta'`改为`'Lily'``'Bella'`。
+ * b. 写出从中删除`'Lori'`、`'Quadro'`、`'Hank'`的代码。
+ * c. 写出在`'Lori'`前插入`'Lily'`、`'Bella'`的代码。
+ * d. 将原数组中的`'Hank'`、`'Collin'`、`'Roberta'`改为`'Lily'`、`'Bella'`。
  
 8. 使用`splice`方法根据下面的数组回答问题：
  
@@ -628,9 +628,9 @@ console.log(a[0][1]); // 0
  ```
  
  * a. 写出从中删除第一个`1`的代码。
- * b. 写出从中删除`1``4``1`的代码。
- * c. 写出在最后插入`3``5`的代码。
- * d. 将原数组中的`5``9``2``6``5`改为`6`。
+ * b. 写出从中删除`1`、`4`、`1`的代码。
+ * c. 写出在最后插入`3`、`5`的代码。
+ * d. 将原数组中的`5`、`9`、`2`、`6`、`5`改为`6`。
  
 9. 当运行下列代码时，`#a~#e`各输出什么。
 
@@ -662,7 +662,7 @@ console.log(a[0][1]); // 0
  console.log(list); // #e
  ```
  
-11. 使用`unshift``shift``push``pop`方法根据下列数组回答问题：
+11. 使用`unshift`、`shift`、`push`、`pop`方法根据下列数组回答问题：
  
  ```javascript
  var one = ['Wednesday'];
