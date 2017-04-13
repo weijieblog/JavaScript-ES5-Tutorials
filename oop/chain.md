@@ -180,9 +180,52 @@ for (var key in a) {
 }
 ```
 
-### 属性屏蔽
+### 属性共享
 
-之前说道，当原型和实例上的属性重名时，我们通过`实例.属性名`或者`实例['属性名']`的方式访问得到的是实例上的属性。把这种情况放到原型链中，就得到了跟作用域链类似的规律，当我们访问一个对象的属性的时候，JavaScript 先从对象自身找起，如果有这个属性，则返回，没有就从该对象的原型上找，有就返回，再没有就从原型的原型上找，有就返回，再没有就再找，一直找到原型链的尽头，如下图所示。
+我们知道构造函数`prototype`上的属性，不仅会被它的实例访问到，还会给所有这个构造函数所创建的实例共享，放到原型链上这个规则也是一样的，某个原型的属性会给原型链上游的成员们共享，如下图：
+
+```{mermaid}
+graph RL
+subgraph ...
+  subgraph 原型的原型的原型
+    subgraph 原型的原型
+      subgraph 原型
+        a[实例]
+      end
+    end
+  end
+end
+```
+
+> 1. 原型的属性给实例分享
+> 2. 原型的原型的属性给原型和实例共同分享
+> 3. ...
+
+我们可以通过下方的代码来验证这个观点
+
+```javascript
+var C = function () {};
+C.prototype.getPosition = function () {console.log('该属性在 C.prototype 上');}
+
+var B = function () {};
+B.prototype = new C();
+
+var A = function () {};
+A.prototype = new B();
+
+var a = new A();
+
+// 原型链上游的各个成员都共享了同一份原型链下游的 getPosition 属性
+var result = a.getPosition === C.prototype.getPosition &&
+             A.prototype.getPosition === C.prototype.getPosition &&
+             B.prototype.getPosition === C.prototype.getPosition;
+
+console.log(result); // true
+```
+
+### 属性回溯
+
+我们知道，当原型和实例上的属性重名时，我们通过`实例.属性名`或者`实例['属性名']`的方式访问得到的是实例上的属性。把这种情况放到原型链中，JavaScript 采取了跟作用域链类似的规则，当我们访问一个对象的属性的时候，JavaScript 先从对象自身寻找该属性，如果有这个属性，则返回，没有就从该对象的原型上找，有就返回，再没有就从原型的原型上找，有就返回，再没有就再找，一直找到原型链的尽头，实在没有就返回`null`，如下图所示。
 
 ```{mermaid}
 graph TB
@@ -221,7 +264,7 @@ var a = new A();
 a.getPosition(); // '该属性在 B.prototype 上'
 ```
 
-从上边代码中我们看到，`B.prototype.getPosition` 阻止了我们通过`a.getPosition`访问到`B.prototype.getPosition`，这种情况被称为**属性屏蔽**。
+从上边代码中我们看到，`B.prototype.getPosition` 阻止了我们通过`a.getPosition`访问到`C.prototype.getPosition`，这种情况被称为**属性屏蔽**。
 
 ### 原型继承
 
@@ -322,7 +365,7 @@ var a = new A();
 console.log(a.constructor === A); // false
 ```
 
-所以，为了避免留下隐患我们最好手动的修复这个问题，再创建原型链的时候手动的给`prototype`属性附上相应的值即可。
+所以，为了避免留下隐患我们最好手动的修复这个问题，在创建原型链的时候手动的给`prototype`属性附上相应的值即可。
 
 ```javascript
 var C = function () {};
