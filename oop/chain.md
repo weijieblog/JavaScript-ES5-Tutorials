@@ -20,6 +20,10 @@ graph LR
   A[wangCai] -- 的原型的原型是 --> C[Animal.prototype]
 ```
 
+```flow
+
+```
+
 如上文所述，`wangCai`是`Dog`的实例，而它的原型`Dog.prototype`，则是`Animal`的实例。我们知道一个实例不仅仅能够访问到他自身的属性，还能够访问到它原型上的属性。那么`wangCai`可以访问到它的原型`Dog.prototype`上的属性而`Dog.prototype`可以访问到`Animal.prototype`上的属性。
 
 ```{mermaid}
