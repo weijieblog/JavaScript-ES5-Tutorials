@@ -348,7 +348,7 @@ graph LR
   S((开始))
   E((结束))
   
-  subgraph 
+  subgraph for 语句
     B0[定义一个条件]
     C1{判断条件}
     B1[循环体]
@@ -377,7 +377,7 @@ graph LR
   S((开始))
   E((结束))
   
-  subgraph 
+  subgraph for 语句
     B0[var i = 1]
     C1{i &lt;= 10}
     B1[console.log]

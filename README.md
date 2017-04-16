@@ -2,7 +2,7 @@
 
 本书托管在 Github 上，[仓库地址](https://github.com/WeiJieGitHub/JavaScript-ES5-Tutorials/)如果喜欢请给个`star`。
 
-[点击这里](es5.weijieblog.com)开始阅读，正在加紧写作。
+[点击这里](http://es5.weijieblog.com/)开始阅读，正在加紧写作。
 
 ## 前言
 
@@ -20,7 +20,7 @@
 
 ## 最后
 
-本书大部分的内容都是根据自己对 JavaScript 的理解和手头上资料的整理创作，个人力量有限，纰漏在所难免，如果发现，到[这里](https://github.com/WeiJieGitHub/JavaScript-ES5-Tutorials/)给出指正，谢谢指教。
+本书大部分的内容都是根据自己对 JavaScript 的理解和手头上资料的整理创作，个人力量有限，纰漏在所难免，如果发现，到[这里](https://github.com/WeiJieGitHub/JavaScript-ES5-Tutorials/issues)给出指正，谢谢指教。
 
 ## 共享协议
 本书使用[署名-非商业使用-禁止演绎](https://creativecommons.org/licenses/by-nc-nd/4.0/)协议共享。
