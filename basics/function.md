@@ -703,9 +703,11 @@ fn(); // 5
 console.log(i); // 100
 ```
 
+> 小练习： 说说出本小节开头时候函数`makeIDGenerator`在调用时其内部的`i`是什么。
+
 ### 全局作用域和本地作用域
 
-当一个变量是函数外部被声明的，我们就说，该变量存在于**全局作用域**，当变量在某个函数体中被声明的，那么，这个变量，就存在于该函数的**本地作用域**，有时候为了方便，就直接称为「某某函数的作用域」。例如下边的代码标识了全局作用域和`fn` `func`函数的本地作用域：
+当一个变量是函数外部被声明的，我们就说该变量存在于**全局作用域**，当变量在某个函数体中被声明的，我们就说这个变量存在于该函数的**本地作用域**，有时候为了方便直接称为「某某函数的作用域」。例如下边的代码标识了全局作用域和`fn` `func`函数的本地作用域：
 
 ```javascript
 // 从这里一直到代码的结束，是全局作用域
@@ -723,9 +725,52 @@ var func = function () {
 }
 ```
 
-上边代码中全局作用域中有 4 个变量,它们分别是`a` `b` `fn` `func`，而函数`fn`和`func`的本地作用域中各有一个变量，它们是`fna`和`funca`。
+上边代码中全局作用域中有 4 个变量,它们分别是`a` `b` `fn` `func`，而函数`fn`和`func`的本地作用域中各有一个变量，它们是`fna`和`funca`如下图。
 
-函数能够访问到自己本地作用域中的变量和全局作用域中的变量，不能访问其他函数作用域中的变量。函数的参数是函数本地作用域中的变量，它在函数被调用的一刻被赋值，函数外部和其他函数都访问不到它，例如：
+```{mermaid}
+graph TD
+subgraph 全局作用域
+  subgraph a
+
+  end
+  subgraph b
+
+  end
+  subgraph fn
+    fna
+  end
+  subgraph func
+    funca
+  end
+end
+```
+
+我们知道，函数能够访问到自己本地作用域中的变量和全局作用域中的变量，不能访问其他函数作用域中的变量。所以上图中函数：
+
+1. `fn`可以访问到变量`a` `b` `fna`但访问不到`funca`
+2. `func` 可以访问到变量`a` `b` `funca`但访问不到`fna`。
+
+我们可以用如下代码验证上面的观点。
+
+```javascript
+var a = 5,
+    b = 8;
+    
+var fn = function () {
+  var fna = 11;
+  console.log(a, b, fna, funca);
+}
+
+var func = function () {
+  var funca = 22;
+  console.log(a, b, fna, funca);
+}
+
+fn(); // 5 8 11 undefined
+func(); // 5 8 undefined 22
+```
+
+函数的参数是函数本地作用域中的变量，它在函数被调用的一刻被赋值，同时`arguments`也是这个函数本地作用域中的变量，每个函数它函数体中的`arguments`都是这个函数自己的参数列表，因为这些玩意儿都算是本地作用域中的变量，所以函数外部和其他函数都访问不到它们，例如：
 
 ``` javascript
 // 找到三个数中最大的数
@@ -760,13 +805,53 @@ var func = function (x1, x2, x3) {
 func('a', 'b'); // 'a' 'b' undefined
 ```
 
-同时`arguments`也是这个函数本地作用域中的变量，每个函数它函数体中的`arguments`都是这个函数自己的参数列表。
+下图标出了上边代码中各个变量的作用范围。
+
+```{mermaid}
+graph TD
+subgraph 全局作用域
+  subgraph max
+    arguments
+    x1
+    x2
+    x3
+  end
+
+  subgraph fn
+    fnarg[arguments]
+  end
+
+  subgraph func
+    funcarg[arguments]
+    funcx1[x1]
+    funcx2[x2]
+    funcx3[x3]
+  end
+end
+```
 
 ### 作用域链
 
 既然函数体中可以是任意合法的代码，那么就可以在函数体中创建函数，在这个被创建的函数的函数体中，又创建函数，接着再创建，再创建，变量的作用域就变的有意思了。JavaScript 管理作用域的规则叫**作用域链**，之前介绍的所有关于作用域的规律都只是作用域链的特殊情况，现在，我们完整的介绍 JavaScript 的作用域规则。
 
-作用域链，就是 JavaScript 在寻找变量时的访问作用域的顺序。当一个函数在执行时用到了某个变量，那么 JavaScript 会首先在这个函数的本地作用域中寻找这个变量，如果找到就直接使用，如果找不到，JavaScript 就到这个函数的父函数的作用域中找，如果找到就使用，如果再找不到，就到这个函数的爷爷函数的作用域中找，以此类推，一直找到全局作用域，找到就使用，找不到就只能是`undefined`了。例如：
+作用域链决定了 JavaScript 在寻找变量时的访问作用域的顺序。当一个函数在执行时用到了某个变量，那么 JavaScript 会首先在这个函数的本地作用域中寻找这个变量，如果找到就直接使用，如果找不到，JavaScript 就到这个函数的父函数的作用域中找，如果找到就使用，如果再找不到，就到这个函数的爷爷函数的作用域中找，以此类推，一直找到全局作用域，找到就使用，找不到就只能是`undefined`了。
+
+```{mermaid}
+graph TB
+  A{本地作用域}
+  A -- 找到 --> return[使用变量]
+  A -- 没找到 --> B{父函数作用域}
+  B -- 找到 --> return
+  B -- 没找到 --> C{爷爷函数作用域}
+  C -- 找到 --> return
+  C -- 没找到 --> D{...}
+  D -- 找到 --> return
+  D -- 没找到 --> E{全局作用域}
+  E -- 找到 --> return
+  E -- 没找到 --> null[undefined]
+```
+
+举个例子，有如下函数一堆：
 
 ```javascript
 // 全局作用域
@@ -775,10 +860,10 @@ var g = 20;
 var first = function (x) {
   // 第一层作用域
   var a = 1 + x;
-  return function (x) {
+  return function second (x) {
     // 第二层作用域
     var b = a + x;
-    return function (x) {
+    return function third (x) {
       // 第三层作用域
       var c = b + x;
       console.log(a, b, c, g, x);
@@ -786,7 +871,44 @@ var first = function (x) {
   }
 }
 ```
-当上边代码中第三层函数运行时，在它的内部用到了`a, b, c, g, x`等等一连串的变量（函数的参数是该函数本地作用域中的变量）。其中`x`和`c`是在第三层作用域中找到的，`b`是在第二层作用域中找到的，`a`是在第一层作用域中找到的，`g`是在全局作用域中找到的。下边的代码验证了上边的描述：
+
+用下图描述了这堆函数作用域的包含关系，从中可以看出每个变量的作用范围。
+
+```{mermaid}
+graph TD
+subgraph 全局作用域
+  g
+  subgraph first
+    a
+    x1[x]
+    subgraph second
+      b
+      x2[x]
+      subgraph third
+        x3[x]
+        c
+      end
+    end
+  end
+end
+```
+
+当上边代码中`third`函数运行时，在它的内部用到了`a, b, c, g, x`等等一连串的变量（函数的参数算作该函数本地作用域中的变量）。其中`x`和`c`是在`third`本地作用域中找到的，`b`是在`second`的作用域中找到的，`a`是在`first`作用域中找到的，`g`是在全局作用域中找到的，如下图，
+
+```{mermaid}
+graph TB
+  S[寻找变量 a, b, c, g, x]
+  S --> A[third 作用域]
+  A -- 找到 x 和 c --> return[使用变量]
+  A -- 余下 a, b, g --> B[second 作用域]
+  B -- 找到 b --> return
+  B -- 余下 a 和 g --> C[first 函数作用域]
+  C -- 找到 a --> return
+  C -- 余下 g --> D[全局作用域]
+  D -- 找到 g --> return
+```
+
+下边的代码验证了上边的描述：
 
 ```javascript
 var g = 20;
@@ -795,11 +917,11 @@ var first = function (x) {
   // 第一层作用域
   var a = 1 + x;
   console.log(a, x);
-  return function (x) {
+  return function second (x) {
     // 第二层作用域
     var b = a + x;
     console.log(a, b, x);
-    return function (x) {
+    return function third (x) {
       // 第三层作用域
       var c = b + x;
       console.log(g, a, b, c, x);
