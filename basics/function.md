@@ -641,90 +641,47 @@ greetingStart('nicky'); // 直接报错
 ## 变量的作用域
 > 这个小节示例代码中的`undefined`在有些浏览器中会正常显示，在有些浏览器中会直接报错提示「xxxx is not defined」，这取决于浏览器默认运行 JavaScript 中的哪种模式，不管是显示了`undefined`还是报错提示，说的都是该变量访问不到。
 
-我们知道函数体可以包含各种个样的代码，既然如此，函数体内部就能声明变量，那么当函数体外部的变量和函数体内部的变量名字一样的时候该如何是好呢。
+我们知道函数体可以包含各种各样的代码，既然如此，函数体内部就能声明变量。如同如下代码所示，函数里有个`i`，函数外又有个`i`，代码中就有了两个`i`变量，那么谁是谁的谁呢，因此我们就需要了解**变量的作用域**。
 
 ```javascript
 // 函数体内部有一个变量 i
-var makeIDGenerator = function () {
+var func = function () {
   var i = 0;
-  return function () {
-    return i++;
-  }
+  console.log(i);
 };
 
 // 外面也有一个变量 i
 var i = 5;
 
-// 当我们调用 makeIDGenerator 的时候，其内部 i 的值是什么呢
-var userIDGenerator = makeIDGenerator();
-```
-### 作用域的基本规则
-
-明白了变量的作用域，就可以很好的解决上面的疑问。变量的作用域可以理解成变量的作用范围，在 JavaScript 中，作用域是以函数为单位的，被称为**函数级作用域**。我们在某个函数内部声明的变量，它的作用范围就在这个函数内部，换句话说，它只能在这个函数内部使用，函数外部，以及其他函数都是访问不到这个变量的，例如下列代码中的`i`变量：
-
-```javascript
-var fn = function () {
-  var i = 5; // 这里声明了 i 变量
-}
-
-// fn 函数的外部访问不到它
-console.log(i); // undefined
-
-
-var func = function () {
-  console.log(i);
-}
-
-// 其他函数也访问不到它
-func(); // undefined
+// 当我们调用 func 的时候，输出什么呢
+func();
 ```
 
-而同时，函数外部声明的变量，在所有函数内部都可以访问得到，例如：
+### 作用域的划分
 
-```javascript
-var i = 5;
-var fn = function () {
-  console.log(i);
-}
-var func = function () {
-  console.log(i);
-}
+在 JavaScript 中，作用域是以函数为单位的。当一个变量是函数外部被声明的，我们就说该变量存在于**全局作用域**，当变量在某个函数体中被声明的，我们就说这个变量存在于该函数的**本地作用域**，有时候为了方便直接称为「某某函数的作用域」。下图描述了上边代码的作用域关系，我们可以看到全局作用域中有个变量`i`，`func`的作用域中也有个变量`i`：
 
-fn(); // 5
-func(); // 5
+```{mermaid}
+graph TD
+subgraph 全局作用域
+  i1[i]
+  subgraph func
+    i2[i]
+  end
+end
 ```
 
-当函数外部声明的变量和内部的变量相同的时候，函数内部使用自己函数体中的变量，而函数外部则使用函数外部的变量，例如：
+再举个例子，如下代码：
 
 ```javascript
-var i = 100;
-var fn = function () {
-  var i = 5;
-  console.log(i);
-}
-
-fn(); // 5
-console.log(i); // 100
-```
-
-> 小练习： 说说出本小节开头时候函数`makeIDGenerator`在调用时其内部的`i`是什么。
-
-### 全局作用域和本地作用域
-
-当一个变量是函数外部被声明的，我们就说该变量存在于**全局作用域**，当变量在某个函数体中被声明的，我们就说这个变量存在于该函数的**本地作用域**，有时候为了方便直接称为「某某函数的作用域」。例如下边的代码标识了全局作用域和`fn` `func`函数的本地作用域：
-
-```javascript
-// 从这里一直到代码的结束，是全局作用域
 var a = 5,
     b = 8;
     
 var fn = function () {
-  // 从这里一直到函数结束是函数 fn 的本地作用域
   var fna = 11;
 }
 
 var func = function () {
-  // 从这里一直到函数结束是函数 func 的本地作用域
   var funca = 22;
 }
 ```
@@ -749,35 +706,9 @@ subgraph 全局作用域
 end
 ```
 
-我们知道，函数能够访问到自己本地作用域中的变量和全局作用域中的变量，不能访问其他函数作用域中的变量。所以上图中函数：
-
-1. `fn`可以访问到变量`a` `b` `fna`但访问不到`funca`
-2. `func` 可以访问到变量`a` `b` `funca`但访问不到`fna`。
-
-我们可以用如下代码验证上面的观点。
-
-```javascript
-var a = 5,
-    b = 8;
-    
-var fn = function () {
-  var fna = 11;
-  console.log(a, b, fna, funca);
-}
-
-var func = function () {
-  var funca = 22;
-  console.log(a, b, fna, funca);
-}
-
-fn(); // 5 8 11 undefined
-func(); // 5 8 undefined 22
-```
-
-函数的参数是函数本地作用域中的变量，它在函数被调用的一刻被赋值，同时`arguments`也是这个函数本地作用域中的变量，每个函数它函数体中的`arguments`都是这个函数自己的参数列表，因为这些玩意儿都算是本地作用域中的变量，所以函数外部和其他函数都访问不到它们，例如：
+函数的参数是函数本地作用域中的变量，它在函数被调用的一刻被赋值，例如：
 
 ``` javascript
-// 找到三个数中最大的数
 var max = function (x1, x2, x3) {
   var result = x1;
   if (x2 > result) {
@@ -791,42 +722,24 @@ var max = function (x1, x2, x3) {
   return result;
 }
 
-max(3, 4, 6);
-
-// 全局作用域中没有 max 的参数
-console.log(x1, x2, x3); // undefined undefined undefined
-
-// 其他函数的本地作用域没有 x1 x2 x3
-var fn = function () {
-  console.log(x1, x2, x3);
-}
-fn(); // undefined undefined undefined
-
-// 此时 func 中的 x1, x2, x3 是自己作用域中的，而不是 max 作用域中的
 var func = function (x1, x2, x3) {
   console.log(x1, x2, x3);
 }
-func('a', 'b'); // 'a' 'b' undefined
 ```
 
-下图标出了上边代码中各个变量的作用范围。
+下图标出了上边代码中各个作用域，以及这些作用域中的变量。
 
 ```{mermaid}
 graph TD
 subgraph 全局作用域
   subgraph max
-    arguments
+    result
     x1
     x2
     x3
   end
 
-  subgraph fn
-    fnarg[arguments]
-  end
-
   subgraph func
-    funcarg[arguments]
     funcx1[x1]
     funcx2[x2]
     funcx3[x3]
@@ -834,28 +747,7 @@ subgraph 全局作用域
 end
 ```
 
-### 作用域链
-
-既然函数体中可以是任意合法的代码，那么就可以在函数体中创建函数，在这个被创建的函数的函数体中，又创建函数，接着再创建，再创建，变量的作用域就变的有意思了。JavaScript 管理作用域的规则叫**作用域链**，之前介绍的所有关于作用域的规律都只是作用域链的特殊情况，现在，我们完整的介绍 JavaScript 的作用域规则。
-
-作用域链决定了 JavaScript 在寻找变量时的访问作用域的顺序，是一种**由内向外**的寻找过程。当一个函数在执行时用到了某个变量，那么 JavaScript 会首先在这个函数的本地作用域中寻找这个变量，如果找到就直接使用，如果找不到，JavaScript 就到这个函数的父函数的作用域中找，如果找到就使用，如果再找不到，就到这个函数的爷爷函数的作用域中找，以此类推，一直找到全局作用域，找到就使用，找不到就只能是`undefined`了。
-
-```{mermaid}
-graph TB
-  A{本地作用域}
-  A -- 找到 --> return[使用变量]
-  A -- 没找到 --> B{父函数作用域}
-  B -- 找到 --> return
-  B -- 没找到 --> C{爷爷函数作用域}
-  C -- 找到 --> return
-  C -- 没找到 --> D{...}
-  D -- 找到 --> return
-  D -- 没找到 --> E{全局作用域}
-  E -- 找到 --> return
-  E -- 没找到 --> null[undefined]
-```
-
-举个例子，有如下函数一堆：
+函数内部还能再声明函数，如下代码所示，
 
 ```javascript
 // 全局作用域
@@ -876,7 +768,8 @@ var first = function (x) {
 }
 ```
 
-用下图描述了这堆函数作用域的包含关系，从中可以看出每个变量的作用范围。
+下图表示了当函数的作用域再包裹函数的作用域的情况：
+
 
 ```{mermaid}
 graph TD
@@ -897,7 +790,89 @@ subgraph 全局作用域
 end
 ```
 
-当上边代码中`third`函数运行时，就启动了由内向外的寻找过程，意味着 JavaScript 会按照「third => second => first => 全局」的循序寻找其内部用到的内部用到的`a, b, c, g, x`等等一连串的变量（函数的参数算作该函数本地作用域中的变量）。其中`x`和`c`是在`third`本地作用域中找到的，`b`是在`second`的作用域中找到的，`a`是在`first`作用域中找到的，`g`是在全局作用域中找到的，如下图，
+当这种情况发生，我们就说`second`是`third`的父级作用域。
+
+### JavaScript 变量访问的规则
+
+作用域的东西已经说的够多了，我们已经知道了这个作用域那个作用域，但本小节开头的问题却还没解决，现在就来介绍 JavaScript 在寻找变量时的访问作用域的规则。
+
+当一个函数在执行时用到了某个变量，那么 JavaScript 会首先在这个函数的本地作用域中寻找这个变量，如果找到就直接使用，如果找不到，JavaScript 就到这个函数的父函数的作用域中找，如果找到就使用，如果再找不到，就到这个函数的爷爷函数的作用域中找，以此类推，一直找到全局作用域，找到就使用，找不到就只能是`undefined`了。如下图所示：
+
+```{mermaid}
+graph TB
+  A{本地作用域}
+  A -- 找到 --> return[使用变量]
+  A -- 没找到 --> B{父函数作用域}
+  B -- 找到 --> return
+  B -- 没找到 --> C{爷爷函数作用域}
+  C -- 找到 --> return
+  C -- 没找到 --> D{...}
+  D -- 找到 --> return
+  D -- 没找到 --> E{全局作用域}
+  E -- 找到 --> return
+  E -- 没找到 --> null[undefined]
+```
+
+现在再回头看看本节开头的例子，我们就能知道答案了。
+
+```javascript
+// 函数体内部有一个变量 i
+var func = function () {
+  var i = 0;
+  console.log(i);
+};
+
+// 外面也有一个变量 i
+var i = 5;
+
+// 当我们调用 func 的时候，输出 0
+func();
+```
+> 函数`func`用到了`i`，根据上边的流程图，JavaScript 会首先在这个函数的本地作用域中寻找`i`，找到了，于是就拿去用了，全局作用域中的`i`就被无视了。
+
+JavaScript 变量访问的规则说白了就是个**由内向外**寻找变量的过程，即内层作用域可以访问到其外层作用域中的变量，但反过来就不行，这是之前举过的例子：
+
+```javascript
+// 全局作用域
+var g = 20;
+
+var first = function (x) {
+  // 第一层作用域
+  var a = 1 + x;
+  return function second (x) {
+    // 第二层作用域
+    var b = a + x;
+    return function third (x) {
+      // 第三层作用域
+      var c = b + x;
+      console.log(a, b, c, g, x);
+    }
+  }
+}
+```
+
+函数层层嵌套，作用域也层层嵌套，下图描述了上边代码的作用域及其变量。
+
+```{mermaid}
+graph TD
+subgraph 全局作用域
+  g
+  subgraph first
+    a
+    x1[x]
+    subgraph second
+      b
+      x2[x]
+      subgraph third
+        x3[x]
+        c
+      end
+    end
+  end
+end
+```
+
+当上边代码中`third`函数运行时，就启动了由内向外的寻找过程，意味着 JavaScript 会按照「third => second => first => 全局」的循序寻找其内部用到的内部用到的`a, b, c, g, x`等等一连串的变量（函数的参数算作该函数本地作用域中的变量）。其中`x`和`c`是在`third`本地作用域中找到的，`b`是在`second`的作用域中找到的，`a`是在`first`作用域中找到的，`g`是在全局作用域中找到的，如下图：
 
 ```{mermaid}
 graph TB
@@ -948,25 +923,36 @@ var third = second(2); // 2 4 2
 // c 和 x 在第三层作用域中被找到，值为 7 和 3
 third(3); // 20 2 4 7 3
 ```
-> 变量的寻找顺序：
-> 1. 第一层函数：第一层作用域 => 全局作用域
-> 2. 第二层函数：第二层作用域 => 第一层作用域 => 全局作用域
-> 3. 第三层函数：第三层作用域 => 第二层作用域 => 第一层作用域 => 全局作用域
 
-当某个函数被运行时，JavaScript 就这样层层寻找这个函数所使用的变量，这种处理函数作用域的规则，被称为**作用域链**是不是很形象呢。
+再强调一下，就是，JavaScript 只会**由内而外**的去寻找，而不会水平的找，或者其他，例如下图：
 
-> 小练习，父函数能访问子函数作用域中的变量么
-> 
-> ```javascript
-> var father = function () {
->   console.log(a);
->   return function son () {
->     var a = 5;
->   }
-> }
-> 
-> father(); // 输出什么呢
-> ```
+```{mermaid}
+graph TD
+subgraph 全局作用域
+  subgraph func1
+    func1Result
+    x1
+    x2
+    x3
+    subgraph fn
+      fnResult
+    end
+  end
+
+  subgraph func2
+    func2Result
+    funcx1[x1]
+    funcx2[x2]
+    funcx3[x3]
+  end
+end
+```
+
+当出现这种情况时：
+
+1. `func1`是不能访问到`fn`中的变量的，这是由外向内。
+2. `func1`和`func2`相互不能访问对方的变量，这是横着找。
+3. `fn`也不能访问到`func2`中的变量。
 
 ## 立即执行的函数表达式
 
