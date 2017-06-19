@@ -1033,7 +1033,7 @@ switch (title) {
       case book.years < 1950 && book.years >= 1840:
         // #4
         break;
-      case book.years < 1840
+      case book.years < 1840:
         // #5
         break;
       default:

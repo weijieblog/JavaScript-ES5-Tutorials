@@ -558,7 +558,7 @@ console.log(0 != ''); // false
  var str3 = 'Qq' + 26412314325,
      d = str3[0] === 'q' || 'Q' && str3[1] === 'q' || 'Q' && str3.length < 32;
      
- var num2 = 32872391428740479,
+ var num2 = 328728740479,
      e = num2 % 2 === 0;
      
  var num3 = 12345,

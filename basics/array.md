@@ -38,7 +38,7 @@ var nullList = [];
 var namelist = ['小黄', '小红', '小绿', '小蓝'];
 ```
 
-成员在数组中的位置，叫做这个成员的**索引**，索引从`0`开始计数，下边的各个表格给出了上边代码中数组 `namelist` `menu``comments`所有成员的索引：
+成员在数组中的位置，叫做这个成员的**索引**，索引从`0`开始计数，下边的各个表格给出了上边代码中数组 `namelist` `menu` `comments`所有成员的索引：
 
 <table>
  <caption><code>namelist</code>的成员及其索引</caption>
@@ -517,7 +517,7 @@ console.log(thirdRow[0]); // 7
  </tbody>
 </table>
 
-上述代码中`firstRow ``secondRow ``thirdRow`它们都是数组类型的数据，我们通过形如`a[y]`的表达式得到了它们，也就是说`a[y]`的表达式的返回值是个数组类型的数据，因此我们可以再对`a[y]`的返回值使用成员操作符`[]`。那么我们就可以直接通过`a[y][x]`获取到具体的单元格的值，比如我们获取数组`a`中的`2``4``8`：
+上述代码中`firstRow` `secondRow` `thirdRow`它们都是数组类型的数据，我们通过形如`a[y]`的表达式得到了它们，也就是说`a[y]`的表达式的返回值是个数组类型的数据，因此我们可以再对`a[y]`的返回值使用成员操作符`[]`。那么我们就可以直接通过`a[y][x]`获取到具体的单元格的值，比如我们获取数组`a`中的`2` `4` `8`：
 
 ```javascript
 var a = [
@@ -685,10 +685,10 @@ console.log(a[0][1]); // 0
   ```
   
   * a. 写出将数组`a`和数组`a`拼接的代码。
-  * b. 写出将数组`a``b``c`拼接到一起的代码。
+  * b. 写出将数组`a` `b` `c`拼接到一起的代码。
   * c. `a.concat(d)`的结果是什么？
   
-13. 使用`slice`方法根据俄下列数组对回答问题。
+13. 使用`slice`方法根据下列数组对回答问题。
 
  ```javascript
  var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
